@@ -12,6 +12,8 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeViewModelProvider);
     final viemodel = ref.watch(homeViewModelProvider.notifier);
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: const CustomText(
@@ -25,25 +27,22 @@ class HomePage extends ConsumerWidget {
           ),
         ],
       ),
-      body: Container(
-        child: switch (state.pokemonList) {
-          Success(data: final data) => CustomGrid(
-              title: "PokeDex",
-              listItems: data.results.map(
-                (pokemon) {
-                  return CustomListTile(
-                    title: pokemon.name,
-                    leading: CustomImage(
-                      imageUrl: pokemon.getImageUrl(),
-                    ),
-                  );
-                },
-              ).toList(),
-            ),
-          Failure(message: final message) => Text(message),
-          Loading() => const Text("Loading"),
-        },
-      ),
+      body: switch (state.pokemonList) {
+        Success(data: final data) => CustomGrid(
+            title: "PokeDex",
+            listItems: data.results.map(
+              (pokemon) {
+                return CustomCard(
+                  imageProvider: NetworkImage(pokemon.getImageUrl()),
+                  title: pokemon.name,
+                  size: size,
+                );
+              },
+            ).toList(),
+          ),
+        Failure(message: final message) => Text(message),
+        Loading() => const Text("Loading"),
+      },
     );
   }
 }

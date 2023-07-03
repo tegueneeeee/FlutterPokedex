@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class CustomImage extends StatelessWidget {
   const CustomImage({
     super.key,
-    required this.imageUrl,
+    required this.imageProvider,
     this.height,
     this.width,
   });
 
-  final String imageUrl;
+  final ImageProvider imageProvider;
   final double? height;
   final double? width;
 
@@ -18,11 +18,12 @@ class CustomImage extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage(imageUrl),
-          )),
+        borderRadius: BorderRadius.circular(8.0),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: imageProvider,
+        ),
+      ),
     );
   }
 }

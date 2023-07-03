@@ -41,7 +41,9 @@ final homeViewModelProvider =
   (ref) {
     final getPokemonListUseCase = ref.watch(getPokemonListUseCaseProvider);
     final getPokemonInfoUseCase = ref.watch(getPokemonInfoUseCaseProvider);
-    final state = HomeState(pokemonList: Loading());
+    final state = HomeState(
+      pokemonList: Loading(),
+    );
     return HomeViewModel(
       state,
       getPokemonListUseCase,

@@ -16,7 +16,7 @@ class PokemonResult with _$PokemonResult {
       _$PokemonResultFromJson(json);
 
   String getImageUrl() {
-    final index = url.split("/").last;
+    final index = url.split("/")[6];
     return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$index.png";
   }
 }
