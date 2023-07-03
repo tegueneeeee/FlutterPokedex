@@ -1,4 +1,4 @@
-import 'package:app/presentation/home/home_screen.dart';
+import 'package:app/presentation/home/home_page.dart';
 import 'package:atomic_design/atomic_design.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "FlutterPokédex",
       theme: const CustomAppTheme().themeData,
-      home: const HomeScreen(),
+      home: const HomePage(),
     );
   }
 }

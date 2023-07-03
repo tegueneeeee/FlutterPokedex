@@ -21,13 +21,19 @@ class _PokeApiService implements PokeApiService {
   String? baseUrl;
 
   @override
-  Future<PokemonUrl> getPokemonUrl({int limit = 151}) async {
+  Future<PokemonList> getPokemonList({
+    int limit = 151,
+    int offset = 0,
+  }) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'limit': limit};
+    final queryParameters = <String, dynamic>{
+      r'limit': limit,
+      r'offset': offset,
+    };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<PokemonUrl>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<PokemonList>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -43,7 +49,34 @@ class _PokeApiService implements PokeApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = PokemonUrl.fromJson(_result.data!);
+    final value = PokemonList.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<PokemonInfo> getPokemonInfo({required String name}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<PokemonInfo>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'v2/pokemon/${name}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = PokemonInfo.fromJson(_result.data!);
     return value;
   }
 
