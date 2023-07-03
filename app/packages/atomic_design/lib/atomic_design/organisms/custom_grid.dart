@@ -1,5 +1,5 @@
 import 'package:atomic_design/atomic_design.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class CustomGrid extends StatelessWidget {
   const CustomGrid({
@@ -29,6 +29,7 @@ class CustomGrid extends StatelessWidget {
               ],
         Expanded(
           child: GridView.builder(
+            padding: const EdgeInsets.all(8.0),
             shrinkWrap: true,
             itemCount: listItems.length,
             itemBuilder: (context, index) => listItems[index],

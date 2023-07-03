@@ -33,31 +33,27 @@ class CustomCard extends StatelessWidget {
             constraints: const BoxConstraints(minHeight: 50.0),
             decoration: BoxDecoration(
               color: averageColor,
+              borderRadius: BorderRadius.circular(16.0),
               border: Border.all(),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomImage(
-                        width: width,
-                        height: height,
-                        imageProvider: imageProvider,
-                      ),
-                      CustomText(
-                        title,
-                        maxLines: 2,
-                        fontWeight: FontWeight.bold,
-                        textStyle: TextStyleEnum.bodyMedium,
-                      ),
-                    ],
+            child: Flexible(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomImage(
+                    width: width,
+                    height: height,
+                    imageProvider: imageProvider,
                   ),
-                )
-              ],
+                  CustomText(
+                    title,
+                    maxLines: 2,
+                    fontWeight: FontWeight.bold,
+                    textStyle: TextStyleEnum.bodyMedium,
+                  ),
+                ],
+              ),
             ),
           ),
         );

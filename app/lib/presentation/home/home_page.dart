@@ -16,6 +16,7 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red,
         title: const CustomText(
           "FlutterPokédex",
           textStyle: TextStyleEnum.headlineMedium,
@@ -23,26 +24,36 @@ class HomePage extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () => viemodel.onEvent(GetPokemonList()),
-            icon: const Icon(Icons.update),
+            icon: const Icon(
+              Icons.update,
+              color: Colors.black,
+            ),
           ),
         ],
       ),
-      body: switch (state.pokemonList) {
-        Success(data: final data) => CustomGrid(
-            title: "PokeDex",
-            listItems: data.results.map(
-              (pokemon) {
-                return CustomCard(
-                  imageProvider: NetworkImage(pokemon.getImageUrl()),
-                  title: pokemon.name,
-                  size: size,
-                );
-              },
-            ).toList(),
-          ),
-        Failure(message: final message) => Text(message),
-        Loading() => const Text("Loading"),
-      },
+      body: Container(
+        color: Colors.grey[800],
+        width: double.infinity,
+        height: double.infinity,
+        child: switch (state.pokemonList) {
+          Success(data: final data) => CustomGrid(
+              listItems: data.results.map(
+                (pokemon) {
+                  return CustomCard(
+                    imageProvider: NetworkImage(pokemon.getImageUrl()),
+                    title: pokemon.name,
+                    size: size,
+                    onTap: () {
+                      viemodel.onEvent(GetPokemonList());
+                    },
+                  );
+                },
+              ).toList(),
+            ),
+          Failure(message: final message) => Text(message),
+          Loading() => const CustomProgressbar(),
+        },
+      ),
     );
   }
 }
