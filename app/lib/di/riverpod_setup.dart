@@ -9,35 +9,34 @@ import 'package:app/presentation/home/home_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final pokeApiServiceProvider = Provider.autoDispose(
+final pokeApiServiceProvider = Provider(
   (_) {
     final dio = Dio();
     return PokeApiService(dio);
   },
 );
-final pokemonRemoteDataSourceProvider = Provider.autoDispose(
+final pokemonRemoteDataSourceProvider = Provider(
   (ref) {
     final pokeApiService = ref.watch(pokeApiServiceProvider);
     return PokemonRemoteDataSourceImpl(pokeApiService);
   },
 );
 
-final pokemonRepositoryProvider = Provider.autoDispose((ref) {
+final pokemonRepositoryProvider = Provider((ref) {
   final pokemonRemoteDateSource = ref.watch(pokemonRemoteDataSourceProvider);
   return PokemonRepositoryImpl(pokemonRemoteDateSource);
 });
 
-final getPokemonListUseCaseProvider = Provider.autoDispose((ref) {
+final getPokemonListUseCaseProvider = Provider((ref) {
   final pokemonRepository = ref.watch(pokemonRepositoryProvider);
   return GetPokemonListUseCase(pokemonRepository);
 });
-final getPokemonInfoUseCaseProvider = Provider.autoDispose((ref) {
+final getPokemonInfoUseCaseProvider = Provider((ref) {
   final pokemonRepository = ref.watch(pokemonRepositoryProvider);
   return GetPokemonInfoUseCase(pokemonRepository);
 });
 
-final homeViewModelProvider =
-    StateNotifierProvider.autoDispose<HomeViewModel, HomeState>(
+final homeViewModelProvider = StateNotifierProvider<HomeViewModel, HomeState>(
   (ref) {
     final getPokemonListUseCase = ref.watch(getPokemonListUseCaseProvider);
     final getPokemonInfoUseCase = ref.watch(getPokemonInfoUseCaseProvider);

@@ -6,55 +6,48 @@ import 'package:palette_generator/palette_generator.dart';
 class CustomCard extends StatelessWidget {
   const CustomCard({
     super.key,
-    required this.title,
-    required this.size,
+    this.title,
+    this.borderRadius,
     required this.imageProvider,
-    this.leading,
-    this.onTap,
+    required this.width,
+    required this.height,
   });
 
-  final String title;
-  final Size size;
-  final Widget? leading;
+  final String? title;
+  final BorderRadius? borderRadius;
+  final double width;
+  final double height;
   final ImageProvider imageProvider;
-  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final width = size.width * 0.30;
-    final height = size.height * 0.15;
     return FutureBuilder<Color>(
       future: _getAverageColor(imageProvider),
       builder: (context, snapshot) {
         final averageColor = snapshot.data ?? Colors.white;
-        return InkWell(
-          onTap: onTap,
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 50.0),
-            decoration: BoxDecoration(
-              color: averageColor,
-              borderRadius: BorderRadius.circular(16.0),
-              border: Border.all(),
-            ),
-            child: Flexible(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomImage(
-                    width: width,
-                    height: height,
-                    imageProvider: imageProvider,
-                  ),
-                  CustomText(
-                    title,
-                    maxLines: 2,
-                    fontWeight: FontWeight.bold,
-                    textStyle: TextStyleEnum.bodyMedium,
-                  ),
-                ],
+        return Container(
+          constraints: const BoxConstraints(minHeight: 50.0),
+          decoration: BoxDecoration(
+            borderRadius: borderRadius,
+            color: averageColor,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomImage(
+                width: width,
+                height: height,
+                imageProvider: imageProvider,
               ),
-            ),
+              (title != null)
+                  ? CustomText(
+                      title!,
+                      maxLines: 2,
+                      fontWeight: FontWeight.bold,
+                      textStyle: TextStyleEnum.bodyMedium,
+                    )
+                  : const SizedBox(),
+            ],
           ),
         );
       },
