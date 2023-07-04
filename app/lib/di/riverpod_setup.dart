@@ -4,6 +4,8 @@ import 'package:app/domain/usecase/pokemon/get_pokemon_list_usecase.dart';
 import 'package:app/infrastructure/api/poke_api_service.dart';
 import 'package:app/infrastructure/repository/datasource_impl/pokemon_remote_datasource_impl.dart';
 import 'package:app/infrastructure/repository/pokemon_repository_impl.dart';
+import 'package:app/presentation/details/details_state.dart';
+import 'package:app/presentation/details/details_view_model.dart';
 import 'package:app/presentation/home/home_state.dart';
 import 'package:app/presentation/home/home_view_model.dart';
 import 'package:dio/dio.dart';
@@ -39,13 +41,25 @@ final getPokemonInfoUseCaseProvider = Provider((ref) {
 final homeViewModelProvider = StateNotifierProvider<HomeViewModel, HomeState>(
   (ref) {
     final getPokemonListUseCase = ref.watch(getPokemonListUseCaseProvider);
-    final getPokemonInfoUseCase = ref.watch(getPokemonInfoUseCaseProvider);
     final state = HomeState(
       pokemonList: Loading(),
     );
     return HomeViewModel(
       state,
       getPokemonListUseCase,
+    );
+  },
+);
+
+final detailsViewModelProvider =
+    StateNotifierProvider<DetailsViewModel, DetailsState>(
+  (ref) {
+    final getPokemonInfoUseCase = ref.watch(getPokemonInfoUseCaseProvider);
+    final state = DetailsState(
+      pokemonInfo: Loading(),
+    );
+    return DetailsViewModel(
+      state,
       getPokemonInfoUseCase,
     );
   },

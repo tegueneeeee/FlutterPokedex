@@ -1,3 +1,5 @@
+import 'package:app/core/result.dart';
+import 'package:app/di/riverpod_setup.dart';
 import 'package:app/domain/entity/pokemon/pokemon_result.dart';
 import 'package:atomic_design/atomic_design.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,8 @@ class DetailsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(detailsViewModelProvider);
+    final viewModel = ref.watch(detailsViewModelProvider.notifier);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -43,6 +47,35 @@ class DetailsPage extends ConsumerWidget {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CustomText(
+                pokemon.name,
+                textStyle: TextStyleEnum.headlineLarge,
+                color: Colors.white,
+              ),
+            ),
+            switch (state.pokemonInfo) {
+              Success(data: final pokemonInfo) => Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomText(
+                          "${pokemonInfo.weight} KG",
+                          color: Colors.white,
+                        ),
+                        CustomText(
+                          "${pokemonInfo.height} M",
+                          color: Colors.white,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              Failure(message: final message) => Text(message),
+              Loading() => const CircularProgressIndicator()
+            },
           ],
         ),
       ),

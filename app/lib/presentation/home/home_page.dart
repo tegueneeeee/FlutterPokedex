@@ -47,6 +47,9 @@ class HomePage extends ConsumerWidget {
                     size: size,
                     imageProvider: NetworkImage(pokemon.getImageUrl()),
                     onTap: () {
+                      ref
+                          .read(detailsViewModelProvider.notifier)
+                          .getPokemonInfo(pokemon.name);
                       ref.read(goRouterProvider).goNamed(
                             DetailsPage.pageName,
                             extra: pokemon,

@@ -129,12 +129,13 @@ class __$$_PokemonInfoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_PokemonInfo implements _PokemonInfo {
+class _$_PokemonInfo extends _PokemonInfo {
   _$_PokemonInfo(
       {required this.id,
       required this.name,
       required this.height,
-      required this.weight});
+      required this.weight})
+      : super._();
 
   factory _$_PokemonInfo.fromJson(Map<String, dynamic> json) =>
       _$$_PokemonInfoFromJson(json);
@@ -182,12 +183,13 @@ class _$_PokemonInfo implements _PokemonInfo {
   }
 }
 
-abstract class _PokemonInfo implements PokemonInfo {
+abstract class _PokemonInfo extends PokemonInfo {
   factory _PokemonInfo(
       {required final int id,
       required final String name,
       required final int height,
       required final int weight}) = _$_PokemonInfo;
+  _PokemonInfo._() : super._();
 
   factory _PokemonInfo.fromJson(Map<String, dynamic> json) =
       _$_PokemonInfo.fromJson;

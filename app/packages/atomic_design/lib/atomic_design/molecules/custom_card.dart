@@ -45,6 +45,7 @@ class CustomCard extends StatelessWidget {
                       maxLines: 2,
                       fontWeight: FontWeight.bold,
                       textStyle: TextStyleEnum.bodyMedium,
+                      color: getContrastingColor(averageColor),
                     )
                   : const SizedBox(),
             ],
@@ -58,5 +59,14 @@ class CustomCard extends StatelessWidget {
     final palette = await PaletteGenerator.fromImageProvider(imageProvider);
     final averageColor = palette.dominantColor!.color;
     return averageColor;
+  }
+
+  Color getContrastingColor(Color color) {
+    int invertedRed = 255 - color.red;
+    int invertedGreen = 255 - color.green;
+    int invertedBlue = 255 - color.blue;
+
+    return Color.fromARGB(
+        color.alpha, invertedRed, invertedGreen, invertedBlue);
   }
 }
