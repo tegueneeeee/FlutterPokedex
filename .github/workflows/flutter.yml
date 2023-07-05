@@ -12,11 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2.8.0
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.10.5'
+      - name: change directory
+        run: cd app
+      - name: build_runner
+        run: dart pub run build_runner build --delete-conflicting-outputs
       - name: Install packages
-        run: cd app && flutter pub get
+        run: flutter pub get
       - name: Linter
         run: flutter analyze
       - name: Text
