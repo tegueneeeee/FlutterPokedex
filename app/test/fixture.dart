@@ -6,4 +6,4 @@ Map<String, dynamic> fixture(String name) {
   return jsonDecode(File("$dir/test/fixture/$name").readAsStringSync());
 }
 
-const pokemon_url_json = "pokemon_url.json";
+const pokemonJson = "pokemon_list.json";
