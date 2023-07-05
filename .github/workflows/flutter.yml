@@ -15,14 +15,16 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.10.5'
-      - name: change directory
-        run: cd app
       - name: build_runner
         run: dart pub run build_runner build --delete-conflicting-outputs
+        working-directory: ./app
       - name: Install packages
         run: flutter pub get
+        working-directory: ./app
       - name: Linter
         run: flutter analyze
+        working-directory: ./app
       - name: Text
         run: flutter test
+        working-directory: ./app
     
