@@ -17,7 +17,6 @@ class DetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(detailsViewModelProvider);
-    final viewModel = ref.watch(detailsViewModelProvider.notifier);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(

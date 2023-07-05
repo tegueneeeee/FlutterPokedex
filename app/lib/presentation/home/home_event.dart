@@ -1,5 +1,5 @@
 sealed class HomeEvent {
-  const HomeEvent._();
+  factory HomeEvent.getPokemonList() = GetPokemonList;
 }
 
 class GetPokemonList implements HomeEvent {}

@@ -35,7 +35,7 @@ void main() {
           // Arrange
           when(
             () => remoteDataSource.getPokemonList(),
-          ).thenAnswer((_) async => Success(data: tPokemonList));
+          ).thenAnswer((_) async => Result.success(data: tPokemonList));
           // Act
           pokemonRepository.getPokemonList();
           // Assert
@@ -50,7 +50,7 @@ void main() {
           // Arrange
           when(
             () => remoteDataSource.getPokemonList(),
-          ).thenAnswer((_) async => Success(data: tPokemonList));
+          ).thenAnswer((_) async => Result.success(data: tPokemonList));
           // Act
           final result = await pokemonRepository.getPokemonList();
           final data = (result as Success<PokemonList>).data;
@@ -77,7 +77,7 @@ void main() {
           // Arrange
           when(
             () => remoteDataSource.getPokemonList(),
-          ).thenAnswer((_) async => Success(data: tPokemonList));
+          ).thenAnswer((_) async => Result.success(data: tPokemonList));
           // Act
           final result = await pokemonRepository.getPokemonList();
           final data = (result as Success<PokemonList>).data;
@@ -105,7 +105,7 @@ void main() {
           when(
             () => remoteDataSource.getPokemonList(),
           ).thenAnswer(
-            (_) async => Failure(
+            (_) async => Result.failure(
               message: "Failure getPokemonList",
               exception: DioException.badResponse(
                 statusCode: 404,

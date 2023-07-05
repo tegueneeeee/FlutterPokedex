@@ -33,7 +33,7 @@ void main() {
           when(
             () => pokemonRepository.getPokemonList(),
           ).thenAnswer(
-            (_) async => Success(data: tPokemonList),
+            (_) async => Result.success(data: tPokemonList),
           );
           // Act
           getPokemonListUseCase();
@@ -50,7 +50,7 @@ void main() {
           when(
             () => pokemonRepository.getPokemonList(),
           ).thenAnswer(
-            (_) async => Success(data: tPokemonList),
+            (_) async => Result.success(data: tPokemonList),
           );
           // Act
           final result = await getPokemonListUseCase();
@@ -79,7 +79,7 @@ void main() {
           when(
             () => pokemonRepository.getPokemonList(),
           ).thenAnswer(
-            (_) async => Failure(
+            (_) async => Result.failure(
               message: "Failure getPokemonList",
               exception: DioException.badResponse(
                 statusCode: 404,

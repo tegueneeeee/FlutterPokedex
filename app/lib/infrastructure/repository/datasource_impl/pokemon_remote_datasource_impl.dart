@@ -13,9 +13,9 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
   Future<Result<PokemonList>> getPokemonList() async {
     try {
       final response = await pokeApiService.getPokemonList();
-      return Success(data: response);
+      return Result.success(data: response);
     } on Exception catch (e) {
-      return Failure(message: "Failure getPokemonList", exception: e);
+      return Result.failure(message: "Failure getPokemonList", exception: e);
     }
   }
 
@@ -25,9 +25,9 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
   }) async {
     try {
       final response = await pokeApiService.getPokemonInfo(name: name);
-      return Success(data: response);
+      return Result.success(data: response);
     } on Exception catch (e) {
-      return Failure(message: "Failure getPokemonInfo", exception: e);
+      return Result.failure(message: "Failure getPokemonInfo", exception: e);
     }
   }
 }

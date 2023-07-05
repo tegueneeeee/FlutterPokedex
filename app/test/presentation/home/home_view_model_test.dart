@@ -39,7 +39,7 @@ void main() {
         () async {
           // Arrange
           when(() => getPokemonListUseCase()).thenAnswer(
-            (_) async => Success(data: tPokemonList),
+            (_) async => Result.success(data: tPokemonList),
           );
           // Act
           final homeViewModel =
@@ -56,7 +56,7 @@ void main() {
         () async {
           // Arrange
           when(() => getPokemonListUseCase()).thenAnswer(
-            (_) async => Success(data: tPokemonList),
+            (_) async => Result.success(data: tPokemonList),
           );
           // Act
           final homeViewModel =

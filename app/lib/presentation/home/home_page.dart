@@ -26,7 +26,7 @@ class HomePage extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => viemodel.onEvent(GetPokemonList()),
+            onPressed: () => viemodel.onEvent(HomeEvent.getPokemonList()),
             icon: const Icon(
               Icons.update,
               color: Colors.black,
