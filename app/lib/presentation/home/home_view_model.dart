@@ -14,7 +14,7 @@ class HomeViewModel extends StateNotifier<HomeState> {
 
   final GetPokemonListUseCase getPokemonListUseCase;
 
-  void onEvent(HomeEvent event) {
+  Future<void> onEvent(HomeEvent event) async {
     final _ = switch (event) {
       GetPokemonList() => _getPokemonList(),
     };
