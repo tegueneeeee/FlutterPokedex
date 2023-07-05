@@ -15,10 +15,8 @@ jobs:
       - uses: subosito/flutter-action@v2.8.0
         with:
           flutter-version: '3.10.5'
-      - name: Chagne directory
-        run: cd app
       - name: Install packages
-        run: flutter pub get
+        run: cd app && flutter pub get
       - name: Linter
         run: flutter analyze
       - name: Text
