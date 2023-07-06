@@ -42,9 +42,7 @@ void main() {
             (_) async => Result.success(data: tPokemonList),
           );
           // Act
-          final homeViewModel =
-              providerContainer.read(homeViewModelProvider.notifier);
-          await homeViewModel.onEvent(GetPokemonList());
+          providerContainer.read(homeViewModelProvider.notifier);
           // Assert
           verify(() => getPokemonListUseCase()).called(1);
           verifyNoMoreInteractions(getPokemonListUseCase);
