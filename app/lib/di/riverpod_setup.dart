@@ -9,6 +9,7 @@ import 'package:app/presentation/details/details_view_model.dart';
 import 'package:app/presentation/home/home_state.dart';
 import 'package:app/presentation/home/home_view_model.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final pokeApiServiceProvider = Provider(
@@ -57,6 +58,7 @@ final detailsViewModelProvider =
     final getPokemonInfoUseCase = ref.watch(getPokemonInfoUseCaseProvider);
     final state = DetailsState(
       pokemonInfo: Loading(),
+      averageColor: Colors.grey,
     );
     return DetailsViewModel(
       state,

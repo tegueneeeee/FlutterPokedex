@@ -1,3 +1,4 @@
+import 'package:app/domain/entity/pokemon_info/pokemon_types.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'pokemon_info.freezed.dart';
@@ -11,12 +12,9 @@ class PokemonInfo with _$PokemonInfo {
     required String name,
     required int height,
     required int weight,
+    required List<PokemonTypes> types,
   }) = _PokemonInfo;
 
   factory PokemonInfo.fromJson(Map<String, dynamic> json) =>
       _$PokemonInfoFromJson(json);
-
-  String getImageUrl() {
-    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png";
-  }
 }

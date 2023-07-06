@@ -1,6 +1,7 @@
 import 'package:app/core/result.dart';
 import 'package:app/core/router.dart';
 import 'package:app/di/riverpod_setup.dart';
+import 'package:app/presentation/details/details_event.dart';
 import 'package:app/presentation/details/details_page.dart';
 import 'package:app/presentation/home/home_event.dart';
 import 'package:atomic_design/atomic_design.dart';
@@ -15,7 +16,6 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeViewModelProvider);
     final viemodel = ref.watch(homeViewModelProvider.notifier);
-    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -34,35 +34,39 @@ class HomePage extends ConsumerWidget {
           ),
         ],
       ),
-      body: Container(
-        color: Colors.grey[800],
-        width: double.infinity,
-        height: double.infinity,
-        child: switch (state.pokemonList) {
-          Success(data: final data) => CustomGrid(
-              listItems: data.results.map(
-                (pokemon) {
-                  return CustomHero(
-                    title: pokemon.name,
-                    size: size,
-                    imageProvider: NetworkImage(pokemon.getImageUrl()),
-                    onTap: () {
-                      ref
-                          .read(detailsViewModelProvider.notifier)
-                          .getPokemonInfo(pokemon.name);
-                      ref.read(goRouterProvider).goNamed(
-                            DetailsPage.pageName,
-                            extra: pokemon,
-                          );
-                    },
-                  );
-                },
-              ).toList(),
-            ),
-          Failure(message: final message) => Text(message),
-          Loading() => const CustomProgressbar(),
-        },
-      ),
+      body: switch (state.pokemonList) {
+        Success(data: final data) => CustomGrid(
+            listItems: data.results.map(
+              (pokemon) {
+                final pokemonImage = NetworkImage(pokemon.getImageUrl());
+                return Column(
+                  children: [
+                    CustomCard(
+                      id: pokemon.getId(),
+                      title: pokemon.name,
+                      image: pokemonImage,
+                      onTap: () async {
+                        ref.read(detailsViewModelProvider.notifier).onEvent(
+                              DetailsEvent.setAverageColor(
+                                imageProvider: pokemonImage,
+                              ),
+                            );
+                        ref.read(detailsViewModelProvider.notifier).onEvent(
+                              DetailsEvent.getPokemonInfo(pokemon: pokemon),
+                            );
+                        ref
+                            .read(goRouterProvider)
+                            .goNamed(DetailsPage.pageName, extra: pokemon);
+                      },
+                    ),
+                  ],
+                );
+              },
+            ).toList(),
+          ),
+        Failure(message: final message) => Text(message),
+        Loading() => const CustomProgressbar(),
+      },
     );
   }
 }
