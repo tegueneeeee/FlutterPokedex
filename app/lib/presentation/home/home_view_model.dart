@@ -9,7 +9,7 @@ class HomeViewModel extends StateNotifier<HomeState> {
     super.state,
     this.getPokemonListUseCase,
   ) {
-    // _getPokemonList();
+    _getPokemonList();
   }
 
   final GetPokemonListUseCase getPokemonListUseCase;

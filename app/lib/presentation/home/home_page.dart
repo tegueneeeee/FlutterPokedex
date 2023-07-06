@@ -3,7 +3,6 @@ import 'package:app/core/router.dart';
 import 'package:app/di/riverpod_setup.dart';
 import 'package:app/presentation/details/details_event.dart';
 import 'package:app/presentation/details/details_page.dart';
-import 'package:app/presentation/home/home_event.dart';
 import 'package:atomic_design/atomic_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +14,6 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeViewModelProvider);
-    final viemodel = ref.watch(homeViewModelProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -24,15 +22,6 @@ class HomePage extends ConsumerWidget {
           "FlutterPokédex",
           textStyle: TextStyleEnum.headlineMedium,
         ),
-        actions: [
-          IconButton(
-            onPressed: () => viemodel.onEvent(HomeEvent.getPokemonList()),
-            icon: const Icon(
-              Icons.update,
-              color: Colors.black,
-            ),
-          ),
-        ],
       ),
       body: switch (state.pokemonList) {
         Success(data: final data) => CustomGrid(
