@@ -27,125 +27,103 @@ class DetailsPage extends ConsumerWidget {
           textStyle: TextStyleEnum.headlineMedium,
         ),
       ),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          if (orientation == Orientation.portrait) {
-            return Column(
+      body: Column(
+        children: [
+          Container(
+            color: state.averageColor,
+            child: Column(
               children: [
-                Container(
-                  color: state.averageColor,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: CustomText(
-                          pokemon.name,
-                          textStyle: TextStyleEnum.headlineMedium,
-                          color: state.averageColor.contrastingColor(),
-                        ),
-                      ),
-                      Hero(
-                        tag: pokemon.name,
-                        child: CustomImage(
-                          image: NetworkImage(pokemon.getImageUrl()),
-                        ),
-                      ),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: CustomText(
+                    pokemon.name,
+                    textStyle: TextStyleEnum.headlineMedium,
+                    color: state.averageColor.contrastingColor(),
                   ),
                 ),
-                Flexible(
-                  child: switch (state.pokemonInfo) {
-                    Success(data: final pokemonInfo) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                Hero(
+                  tag: pokemon.name,
+                  child: CustomImage(
+                    image: NetworkImage(pokemon.getImageUrl()),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Flexible(
+            child: switch (state.pokemonInfo) {
+              Success(data: final pokemonInfo) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      color: Colors.grey,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(
-                            color: Colors.grey,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  children: [
-                                    const CustomText(
-                                      "Height",
-                                      color: Colors.white,
-                                    ),
-                                    CustomText(
-                                      "${pokemonInfo.height * 10} cm",
-                                      color: Colors.black,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    const CustomText(
-                                      "Weight",
-                                      color: Colors.white,
-                                    ),
-                                    CustomText(
-                                      "${pokemonInfo.weight / 10} kg",
-                                      color: Colors.black,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                          Column(
+                            children: [
+                              const CustomText(
+                                "Height",
+                                color: Colors.white,
+                              ),
+                              CustomText(
+                                "${pokemonInfo.height * 10} cm",
+                                color: Colors.black,
+                              ),
+                            ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 8.0, top: 8.0),
-                            child: CustomText(
-                              "Type",
-                              textStyle: TextStyleEnum.bodyLarge,
-                            ),
+                          Column(
+                            children: [
+                              const CustomText(
+                                "Weight",
+                                color: Colors.white,
+                              ),
+                              CustomText(
+                                "${pokemonInfo.weight / 10} kg",
+                                color: Colors.black,
+                              ),
+                            ],
                           ),
-                          Row(
-                            children: pokemonInfo.types
-                                .map(
-                                  (types) => Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: PokemonTypeUtils.getTypeColor(
-                                            types.type.name),
-                                        borderRadius:
-                                            BorderRadius.circular(16.0),
-                                      ),
-                                      width: 150,
-                                      height: 30,
-                                      child: Center(
-                                        child: Text(
-                                          types.type.name
-                                              .capitalizeFirstLetter(),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          )
                         ],
                       ),
-                    Failure(message: final message) => Text(message),
-                    Loading() => const CircularProgressIndicator()
-                  },
-                ),
-              ],
-            );
-          } else {
-            return Row(
-              children: [
-                Container(
-                  color: state.averageColor,
-                  child: Hero(
-                    tag: pokemon.name,
-                    child: CustomImage(
-                      image: NetworkImage(pokemon.getImageUrl()),
                     ),
-                  ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0, top: 8.0),
+                      child: CustomText(
+                        "Type",
+                        textStyle: TextStyleEnum.bodyLarge,
+                      ),
+                    ),
+                    Row(
+                      children: pokemonInfo.types
+                          .map(
+                            (types) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: PokemonTypeUtils.getTypeColor(
+                                      types.type.name),
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ),
+                                width: 150,
+                                height: 30,
+                                child: Center(
+                                  child: Text(
+                                    types.type.name.capitalizeFirstLetter(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    )
+                  ],
                 ),
-              ],
-            );
-          }
-        },
+              Failure(message: final message) => Text(message),
+              Loading() => const CircularProgressIndicator()
+            },
+          ),
+        ],
       ),
     );
   }

@@ -27,7 +27,7 @@ void main() {
         ],
       );
       fixture = Fixture();
-      tPokemonList = PokemonList.fromJson(fixture(Fixture.pokemonJson));
+      tPokemonList = PokemonList.fromJson(fixture(Fixture.pokemonListJson));
     },
   );
 

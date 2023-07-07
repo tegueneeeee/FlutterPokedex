@@ -2,6 +2,7 @@ import 'package:app/core/result.dart';
 import 'package:app/domain/entity/pokemon/pokemon_list.dart';
 import 'package:app/domain/repository/pokemon_repository.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_list_usecase.dart';
+import 'package:app/infrastructure/repository/datasource_impl/pokemon_remote_datasource_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -20,7 +21,7 @@ void main() {
     pokemonRepository = MockPokemonRepository();
     getPokemonListUseCase = GetPokemonListUseCase(pokemonRepository);
     fixture = Fixture();
-    tPokemonList = PokemonList.fromJson(fixture(Fixture.pokemonJson));
+    tPokemonList = PokemonList.fromJson(fixture(Fixture.pokemonListJson));
   });
 
   group(
@@ -57,15 +58,10 @@ void main() {
           final data = (result as Success<PokemonList>).data;
           // Assert
           expect(result, isA<Success<PokemonList>>());
-          expect(
-            data,
-            tPokemonList,
-          );
+          expect(data, tPokemonList);
           expect(data.count, 1281);
-          expect(
-            data.next,
-            "https://pokeapi.co/api/v2/pokemon?offset=151&limit=151",
-          );
+          expect(data.next,
+              "https://pokeapi.co/api/v2/pokemon?offset=151&limit=151");
           expect(data.previous, null);
           expect(data.results[0].name, "bulbasaur");
           expect(data.results[0].url, "https://pokeapi.co/api/v2/pokemon/1/");
@@ -80,7 +76,7 @@ void main() {
             () => pokemonRepository.getPokemonList(),
           ).thenAnswer(
             (_) async => Result.failure(
-              message: "Failure getPokemonList",
+              message: PokemonRemoteDataSourceImpl.getPokemonListFailureMessage,
               exception: DioException.badResponse(
                 statusCode: 404,
                 requestOptions: RequestOptions(),
@@ -96,10 +92,8 @@ void main() {
           final message = (result as Failure<PokemonList>).message;
           // Assert
           expect(result, isA<Failure<PokemonList>>());
-          expect(
-            message,
-            "Failure getPokemonList",
-          );
+          expect(message,
+              PokemonRemoteDataSourceImpl.getPokemonListFailureMessage);
         },
       );
     },

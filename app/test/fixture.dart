@@ -7,5 +7,6 @@ class Fixture {
     return jsonDecode(File("$dir/test/fixture/$name").readAsStringSync());
   }
 
-  static const pokemonJson = "pokemon_list.json";
+  static const pokemonListJson = "pokemon_list.json";
+  static const pokemonInfoJson = "pokemon_info.json";
 }

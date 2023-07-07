@@ -14,48 +14,49 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeViewModelProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: const CustomText(
-          "FlutterPokédex",
-          textStyle: TextStyleEnum.headlineMedium,
-        ),
-      ),
-      body: switch (state.pokemonList) {
-        Success(data: final data) => CustomGrid(
-            listItems: data.results.map(
-              (pokemon) {
-                final pokemonImage = NetworkImage(pokemon.getImageUrl());
-                return Column(
-                  children: [
-                    CustomCard(
-                      id: pokemon.getId(),
-                      title: pokemon.name,
-                      image: pokemonImage,
-                      onTap: () async {
-                        ref.read(detailsViewModelProvider.notifier).onEvent(
-                              DetailsEvent.setAverageColor(
-                                imageProvider: pokemonImage,
-                              ),
-                            );
-                        ref.read(detailsViewModelProvider.notifier).onEvent(
-                              DetailsEvent.getPokemonInfo(pokemon: pokemon),
-                            );
-                        ref
-                            .read(goRouterProvider)
-                            .goNamed(DetailsPage.pageName, extra: pokemon);
-                      },
-                    ),
-                  ],
-                );
-              },
-            ).toList(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: const CustomText(
+            "FlutterPokédex",
+            textStyle: TextStyleEnum.headlineMedium,
           ),
-        Failure(message: final message) => Text(message),
-        Loading() => const CustomProgressbar(),
-      },
+        ),
+        body: switch (state.pokemonList) {
+          Success(data: final data) => CustomGrid(
+              listItems: data.results.map(
+                (pokemon) {
+                  final pokemonImage = NetworkImage(pokemon.getImageUrl());
+                  return Column(
+                    children: [
+                      CustomCard(
+                        id: pokemon.getId(),
+                        title: pokemon.name,
+                        image: pokemonImage,
+                        onTap: () async {
+                          ref.read(detailsViewModelProvider.notifier).onEvent(
+                                DetailsEvent.setAverageColor(
+                                  imageProvider: pokemonImage,
+                                ),
+                              );
+                          ref.read(detailsViewModelProvider.notifier).onEvent(
+                                DetailsEvent.getPokemonInfo(pokemon: pokemon),
+                              );
+                          ref
+                              .read(goRouterProvider)
+                              .goNamed(DetailsPage.pageName, extra: pokemon);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ).toList(),
+            ),
+          Failure(message: final message) => Text(message),
+          Loading() => const CustomProgressbar(),
+        },
+      ),
     );
   }
 }
