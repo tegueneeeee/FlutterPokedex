@@ -21,7 +21,8 @@ void main() {
     pokemonRepository = MockPokemonRepository();
     getPokemonListUseCase = GetPokemonListUseCase(pokemonRepository);
     fixture = Fixture();
-    tPokemonList = PokemonList.fromJson(fixture(Fixture.pokemonListJson));
+    tPokemonList =
+        PokemonList.fromJson(fixture.readJsonFile(Fixture.pokemonListJson));
   });
 
   group(

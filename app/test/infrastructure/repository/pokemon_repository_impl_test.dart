@@ -25,8 +25,10 @@ void main() {
       remoteDataSource = MockRemoteDataSource();
       pokemonRepository = PokemonRepositoryImpl(remoteDataSource);
       fixture = Fixture();
-      tPokemonList = PokemonList.fromJson(fixture(Fixture.pokemonListJson));
-      tPokemonInfo = PokemonInfo.fromJson(fixture(Fixture.pokemonInfoJson));
+      tPokemonList =
+          PokemonList.fromJson(fixture.readJsonFile(Fixture.pokemonListJson));
+      tPokemonInfo =
+          PokemonInfo.fromJson(fixture.readJsonFile(Fixture.pokemonInfoJson));
     },
   );
 

@@ -1,6 +1,7 @@
 import 'package:app/core/result.dart';
 import 'package:app/domain/entity/pokemon/pokemon_list.dart';
 import 'package:app/domain/entity/pokemon_info/pokemon_info.dart';
+import 'package:app/domain/entity/pokemon_species/pokemon_species.dart';
 import 'package:app/infrastructure/api/poke_api_service.dart';
 import 'package:app/infrastructure/repository/datasource/pokemon_remote_datasource.dart';
 import 'package:app/infrastructure/repository/datasource_impl/pokemon_remote_datasource_impl.dart';
@@ -18,14 +19,18 @@ void main() {
   late Fixture fixture;
   late PokemonList tPokemonList;
   late PokemonInfo tPokemonInfo;
-
+  late PokemonSpecies tPokemonSpecies;
   setUp(
     () async {
       pokeApiService = MockPokeApiService();
       dataSource = PokemonRemoteDataSourceImpl(pokeApiService);
       fixture = Fixture();
-      tPokemonList = PokemonList.fromJson(fixture(Fixture.pokemonListJson));
-      tPokemonInfo = PokemonInfo.fromJson(fixture(Fixture.pokemonInfoJson));
+      tPokemonList =
+          PokemonList.fromJson(fixture.readJsonFile(Fixture.pokemonListJson));
+      tPokemonInfo =
+          PokemonInfo.fromJson(fixture.readJsonFile(Fixture.pokemonInfoJson));
+      tPokemonSpecies = PokemonSpecies.fromJson(
+          fixture.readJsonFile(Fixture.pokemonSpeciesJson));
     },
   );
 
@@ -167,6 +172,71 @@ void main() {
           expect(result, isA<Failure<PokemonInfo>>());
           expect(message,
               PokemonRemoteDataSourceImpl.getPokemonInfoFailureMessage);
+        },
+      );
+    },
+  );
+
+  group(
+    "getPokemonSpecies",
+    () {
+      test(
+        "Should fetch Pokemon Species from the pokeApi",
+        () async {
+          // Arrage
+          when(
+            () => pokeApiService.getPokemonSpecies(name: "test"),
+          ).thenAnswer((_) async => tPokemonSpecies);
+          // Act
+          dataSource.getPokemonSpecies(name: "test");
+          // Assert
+          verify(() => pokeApiService.getPokemonSpecies(name: "test"))
+              .called(1);
+          verifyNoMoreInteractions(pokeApiService);
+        },
+      );
+
+      test(
+        "Should handle suceess when fetching pokemon species from the pokeApi",
+        () async {
+          // Arrage
+          when(
+            () => pokeApiService.getPokemonSpecies(name: "test"),
+          ).thenAnswer((_) async => tPokemonSpecies);
+          // Act
+          final result = await dataSource.getPokemonSpecies(name: "test");
+          final data = (result as Success<PokemonSpecies>).data;
+          // Assert
+          expect(result, isA<Success<PokemonSpecies>>());
+          expect(data, tPokemonSpecies);
+          expect(
+            data.flavorTexts[3].flavorText,
+            "The seed on its\nback is filled\nwith nutrients.\fThe seed grows\nsteadily larger as\nits body grows.",
+          );
+        },
+      );
+      test(
+        "Should handle failure when fetching pokemon species from the pokeApi",
+        () async {
+          // Arrage
+          when(
+            () => pokeApiService.getPokemonSpecies(name: "test"),
+          ).thenThrow(
+            DioException.badResponse(
+              statusCode: 404,
+              requestOptions: RequestOptions(),
+              response: Response(
+                requestOptions: RequestOptions(),
+              ),
+            ),
+          );
+          // Act
+          final result = await dataSource.getPokemonSpecies(name: "test");
+          final message = (result as Failure<PokemonSpecies>).message;
+          // Assert
+          expect(result, isA<Failure<PokemonSpecies>>());
+          expect(message,
+              PokemonRemoteDataSourceImpl.getPokemonSpeciesFailureMessage);
         },
       );
     },

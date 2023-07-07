@@ -10,6 +10,6 @@ part 'details_state.freezed.dart';
 class DetailsState with _$DetailsState {
   factory DetailsState({
     required Result<PokemonInfo> pokemonInfo,
-    required Color averageColor,
+    required Result<Color> averageColor,
   }) = _DetailsState;
 }

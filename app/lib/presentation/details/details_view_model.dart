@@ -1,9 +1,9 @@
 import 'package:app/core/result.dart';
 import 'package:app/domain/entity/pokemon/pokemon_result.dart';
+import 'package:app/domain/usecase/image_provider/get_image_provider_average_color_usecase.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_info_usecase.dart';
 import 'package:app/presentation/details/details_event.dart';
 import 'package:app/presentation/details/details_state.dart';
-import 'package:atomic_design/atomic_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,9 +11,11 @@ class DetailsViewModel extends StateNotifier<DetailsState> {
   DetailsViewModel(
     super.state,
     this.getPokemonInfoUseCase,
+    this.getImageProviderAverageColorUseCse,
   );
 
   final GetPokemonInfoUseCase getPokemonInfoUseCase;
+  final GetImageProviderAverageColorUseCase getImageProviderAverageColorUseCse;
 
   Future<void> onEvent(DetailsEvent event) async {
     final _ = switch (event) {
@@ -30,7 +32,8 @@ class DetailsViewModel extends StateNotifier<DetailsState> {
   }
 
   void _setAverageColor(ImageProvider imageProvider) async {
-    final averageColor = await imageProvider.average();
+    final averageColor =
+        await getImageProviderAverageColorUseCse(imageProvider: imageProvider);
     state = state.copyWith(averageColor: averageColor);
   }
 }

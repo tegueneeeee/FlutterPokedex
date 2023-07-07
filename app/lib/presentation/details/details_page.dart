@@ -30,7 +30,11 @@ class DetailsPage extends ConsumerWidget {
       body: Column(
         children: [
           Container(
-            color: state.averageColor,
+            color: switch (state.averageColor) {
+              Success(data: final data) => data,
+              Failure() => Colors.grey,
+              Loading() => Colors.grey,
+            },
             child: Column(
               children: [
                 Padding(
@@ -38,7 +42,11 @@ class DetailsPage extends ConsumerWidget {
                   child: CustomText(
                     pokemon.name,
                     textStyle: TextStyleEnum.headlineMedium,
-                    color: state.averageColor.contrastingColor(),
+                    color: switch (state.averageColor) {
+                      Success(data: final data) => data.contrastingColor(),
+                      Failure() => Colors.grey,
+                      Loading() => Colors.grey,
+                    },
                   ),
                 ),
                 Hero(
@@ -120,7 +128,9 @@ class DetailsPage extends ConsumerWidget {
                   ],
                 ),
               Failure(message: final message) => Text(message),
-              Loading() => const CircularProgressIndicator()
+              Loading() => const Center(
+                  child: CircularProgressIndicator(),
+                )
             },
           ),
         ],

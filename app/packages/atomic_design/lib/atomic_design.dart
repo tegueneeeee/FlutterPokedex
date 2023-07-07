@@ -2,7 +2,6 @@ export 'atomic_design/atoms/custom_app_theme.dart';
 export 'atomic_design/atoms/custom_text.dart';
 export 'atomic_design/atoms/custom_image.dart';
 export 'atomic_design/atoms/custom_progressbar.dart';
-export 'atomic_design/atoms/extensions.dart';
 
 export 'atomic_design/molecules/custom_card.dart';
 

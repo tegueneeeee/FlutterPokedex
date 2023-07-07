@@ -29,12 +29,13 @@ void main() {
         ],
       );
       fixture = Fixture();
-      tPokemonList = PokemonList.fromJson(fixture(Fixture.pokemonListJson));
+      tPokemonList =
+          PokemonList.fromJson(fixture.readJsonFile(Fixture.pokemonListJson));
     },
   );
 
   group(
-    "GetPokemonList",
+    "getPokemonList",
     () {
       test(
         "Should fetch pokemon list from the getPokemonListUseCase",

@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$DetailsState {
   Result<PokemonInfo> get pokemonInfo => throw _privateConstructorUsedError;
-  Color get averageColor => throw _privateConstructorUsedError;
+  Result<Color> get averageColor => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DetailsStateCopyWith<DetailsState> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $DetailsStateCopyWith<$Res> {
           DetailsState value, $Res Function(DetailsState) then) =
       _$DetailsStateCopyWithImpl<$Res, DetailsState>;
   @useResult
-  $Res call({Result<PokemonInfo> pokemonInfo, Color averageColor});
+  $Res call({Result<PokemonInfo> pokemonInfo, Result<Color> averageColor});
 }
 
 /// @nodoc
@@ -57,7 +57,7 @@ class _$DetailsStateCopyWithImpl<$Res, $Val extends DetailsState>
       averageColor: null == averageColor
           ? _value.averageColor
           : averageColor // ignore: cast_nullable_to_non_nullable
-              as Color,
+              as Result<Color>,
     ) as $Val);
   }
 }
@@ -70,7 +70,7 @@ abstract class _$$_DetailsStateCopyWith<$Res>
       __$$_DetailsStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Result<PokemonInfo> pokemonInfo, Color averageColor});
+  $Res call({Result<PokemonInfo> pokemonInfo, Result<Color> averageColor});
 }
 
 /// @nodoc
@@ -95,7 +95,7 @@ class __$$_DetailsStateCopyWithImpl<$Res>
       averageColor: null == averageColor
           ? _value.averageColor
           : averageColor // ignore: cast_nullable_to_non_nullable
-              as Color,
+              as Result<Color>,
     ));
   }
 }
@@ -108,7 +108,7 @@ class _$_DetailsState implements _DetailsState {
   @override
   final Result<PokemonInfo> pokemonInfo;
   @override
-  final Color averageColor;
+  final Result<Color> averageColor;
 
   @override
   String toString() {
@@ -139,12 +139,12 @@ class _$_DetailsState implements _DetailsState {
 abstract class _DetailsState implements DetailsState {
   factory _DetailsState(
       {required final Result<PokemonInfo> pokemonInfo,
-      required final Color averageColor}) = _$_DetailsState;
+      required final Result<Color> averageColor}) = _$_DetailsState;
 
   @override
   Result<PokemonInfo> get pokemonInfo;
   @override
-  Color get averageColor;
+  Result<Color> get averageColor;
   @override
   @JsonKey(ignore: true)
   _$$_DetailsStateCopyWith<_$_DetailsState> get copyWith =>
