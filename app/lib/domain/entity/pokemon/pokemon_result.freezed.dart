@@ -20,7 +20,9 @@ PokemonResult _$PokemonResultFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PokemonResult {
+  @HiveField(0)
   String get name => throw _privateConstructorUsedError;
+  @HiveField(1)
   String get url => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +37,7 @@ abstract class $PokemonResultCopyWith<$Res> {
           PokemonResult value, $Res Function(PokemonResult) then) =
       _$PokemonResultCopyWithImpl<$Res, PokemonResult>;
   @useResult
-  $Res call({String name, String url});
+  $Res call({@HiveField(0) String name, @HiveField(1) String url});
 }
 
 /// @nodoc
@@ -75,7 +77,7 @@ abstract class _$$_PokemonResultCopyWith<$Res>
       __$$_PokemonResultCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String url});
+  $Res call({@HiveField(0) String name, @HiveField(1) String url});
 }
 
 /// @nodoc
@@ -107,15 +109,20 @@ class __$$_PokemonResultCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
+@HiveType(typeId: 0)
 class _$_PokemonResult extends _PokemonResult {
-  _$_PokemonResult({required this.name, required this.url}) : super._();
+  _$_PokemonResult(
+      {@HiveField(0) required this.name, @HiveField(1) required this.url})
+      : super._();
 
   factory _$_PokemonResult.fromJson(Map<String, dynamic> json) =>
       _$$_PokemonResultFromJson(json);
 
   @override
+  @HiveField(0)
   final String name;
   @override
+  @HiveField(1)
   final String url;
 
   @override
@@ -152,16 +159,18 @@ class _$_PokemonResult extends _PokemonResult {
 
 abstract class _PokemonResult extends PokemonResult {
   factory _PokemonResult(
-      {required final String name,
-      required final String url}) = _$_PokemonResult;
+      {@HiveField(0) required final String name,
+      @HiveField(1) required final String url}) = _$_PokemonResult;
   _PokemonResult._() : super._();
 
   factory _PokemonResult.fromJson(Map<String, dynamic> json) =
       _$_PokemonResult.fromJson;
 
   @override
+  @HiveField(0)
   String get name;
   @override
+  @HiveField(1)
   String get url;
   @override
   @JsonKey(ignore: true)

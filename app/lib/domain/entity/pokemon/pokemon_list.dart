@@ -11,7 +11,7 @@ class PokemonList with _$PokemonList {
     String? next,
     String? previous,
     required List<PokemonResult> results,
-  }) = _Pokemon;
+  }) = _PokemonList;
 
   factory PokemonList.fromJson(Map<String, dynamic> json) =>
       _$PokemonListFromJson(json);

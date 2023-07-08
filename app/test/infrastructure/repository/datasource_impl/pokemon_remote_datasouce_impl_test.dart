@@ -15,7 +15,7 @@ class MockPokeApiService extends Mock implements PokeApiService {}
 
 void main() {
   late MockPokeApiService pokeApiService;
-  late PokemonRemoteDataSource dataSource;
+  late PokemonRemoteDataSource pokemonRemoteDataSource;
   late Fixture fixture;
   late PokemonList tPokemonList;
   late PokemonInfo tPokemonInfo;
@@ -23,7 +23,7 @@ void main() {
   setUp(
     () async {
       pokeApiService = MockPokeApiService();
-      dataSource = PokemonRemoteDataSourceImpl(pokeApiService);
+      pokemonRemoteDataSource = PokemonRemoteDataSourceImpl(pokeApiService);
       fixture = Fixture();
       tPokemonList =
           PokemonList.fromJson(fixture.readJsonFile(Fixture.pokemonListJson));
@@ -46,7 +46,7 @@ void main() {
             () => pokeApiService.getPokemonList(),
           ).thenAnswer((_) async => tPokemonList);
           // Act
-          final data = await dataSource.getPokemonList();
+          final data = await pokemonRemoteDataSource.getPokemonList();
           // Assert
           verify(() => pokeApiService.getPokemonList()).called(1);
           verifyNoMoreInteractions(pokeApiService);
@@ -74,7 +74,7 @@ void main() {
           );
           // Act
           try {
-            await dataSource.getPokemonList();
+            await pokemonRemoteDataSource.getPokemonList();
           } on Exception catch (e) {
             // Assert
             expect(e, isA<Exception>());
@@ -96,7 +96,7 @@ void main() {
             () => pokeApiService.getPokemonInfo(name: "test"),
           ).thenAnswer((_) async => tPokemonInfo);
           // Act
-          dataSource.getPokemonInfo(name: "test");
+          pokemonRemoteDataSource.getPokemonInfo(name: "test");
           // Assert
           verify(() => pokeApiService.getPokemonInfo(name: "test")).called(1);
           verifyNoMoreInteractions(pokeApiService);
@@ -110,7 +110,8 @@ void main() {
             () => pokeApiService.getPokemonInfo(name: "test"),
           ).thenAnswer((_) async => tPokemonInfo);
           // Act
-          final result = await dataSource.getPokemonInfo(name: "test");
+          final result =
+              await pokemonRemoteDataSource.getPokemonInfo(name: "test");
           final data = (result as Success<PokemonInfo>).data;
           // Assert
           expect(result, isA<Success<PokemonInfo>>());
@@ -144,7 +145,8 @@ void main() {
             ),
           );
           // Act
-          final result = await dataSource.getPokemonInfo(name: "test");
+          final result =
+              await pokemonRemoteDataSource.getPokemonInfo(name: "test");
           final message = (result as Failure<PokemonInfo>).message;
           // Assert
           expect(result, isA<Failure<PokemonInfo>>());
@@ -166,7 +168,7 @@ void main() {
             () => pokeApiService.getPokemonSpecies(name: "test"),
           ).thenAnswer((_) async => tPokemonSpecies);
           // Act
-          dataSource.getPokemonSpecies(name: "test");
+          pokemonRemoteDataSource.getPokemonSpecies(name: "test");
           // Assert
           verify(() => pokeApiService.getPokemonSpecies(name: "test"))
               .called(1);
@@ -182,7 +184,8 @@ void main() {
             () => pokeApiService.getPokemonSpecies(name: "test"),
           ).thenAnswer((_) async => tPokemonSpecies);
           // Act
-          final result = await dataSource.getPokemonSpecies(name: "test");
+          final result =
+              await pokemonRemoteDataSource.getPokemonSpecies(name: "test");
           final data = (result as Success<PokemonSpecies>).data;
           // Assert
           expect(result, isA<Success<PokemonSpecies>>());
@@ -209,7 +212,8 @@ void main() {
             ),
           );
           // Act
-          final result = await dataSource.getPokemonSpecies(name: "test");
+          final result =
+              await pokemonRemoteDataSource.getPokemonSpecies(name: "test");
           final message = (result as Failure<PokemonSpecies>).message;
           // Assert
           expect(result, isA<Failure<PokemonSpecies>>());

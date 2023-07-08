@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive/hive.dart';
 
 part 'pokemon_result.freezed.dart';
 part 'pokemon_result.g.dart';
@@ -6,10 +7,10 @@ part 'pokemon_result.g.dart';
 @freezed
 class PokemonResult with _$PokemonResult {
   PokemonResult._();
-
+  @HiveType(typeId: 0)
   factory PokemonResult({
-    required String name,
-    required String url,
+    @HiveField(0) required String name,
+    @HiveField(1) required String url,
   }) = _PokemonResult;
 
   factory PokemonResult.fromJson(Map<String, dynamic> json) =>

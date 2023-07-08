@@ -3,7 +3,9 @@ import 'package:app/domain/usecase/image_provider/get_image_provider_average_col
 import 'package:app/domain/usecase/pokemon/get_pokemon_info_usecase.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_list_usecase.dart';
 import 'package:app/infrastructure/api/poke_api_service.dart';
+import 'package:app/infrastructure/db/pokemon_result_dao_impl.dart';
 import 'package:app/infrastructure/repository/datasource_impl/pokemon_cache_datasource_impl.dart';
+import 'package:app/infrastructure/repository/datasource_impl/pokemon_local_datasource_impl.dart';
 import 'package:app/infrastructure/repository/datasource_impl/pokemon_remote_datasource_impl.dart';
 import 'package:app/infrastructure/repository/pokemon_repository_impl.dart';
 import 'package:app/presentation/details/details_state.dart';
@@ -19,15 +21,31 @@ final pokeApiServiceProvider = Provider(
     return PokeApiService(dio);
   },
 );
+
+final pokemonResultDAOProvider = Provider(
+  (_) {
+    final pokemonResultDAO = PokemonResultDAOImpl();
+    pokemonResultDAO.init();
+    return pokemonResultDAO;
+  },
+);
+
+final pokemonCacheDataSourceProvider =
+    Provider((_) => PokemonCacheDataSourceImpl());
+
+final pokemonLocalDataSourceProvider = Provider(
+  (ref) {
+    final pokemonResultDAO = ref.watch(pokemonResultDAOProvider);
+    return PokemonLocalDataSourceImpl(pokemonResultDAO);
+  },
+);
+
 final pokemonRemoteDataSourceProvider = Provider(
   (ref) {
     final pokeApiService = ref.watch(pokeApiServiceProvider);
     return PokemonRemoteDataSourceImpl(pokeApiService);
   },
 );
-
-final pokemonCacheDataSourceProvider =
-    Provider((_) => PokemonCacheDataSourceImpl());
 
 final pokemonRepositoryProvider = Provider((ref) {
   final pokemonRemoteDateSource = ref.watch(pokemonRemoteDataSourceProvider);

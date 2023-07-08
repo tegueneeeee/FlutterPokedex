@@ -6,7 +6,8 @@ part of 'pokemon_list.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Pokemon _$$_PokemonFromJson(Map<String, dynamic> json) => _$_Pokemon(
+_$_PokemonList _$$_PokemonListFromJson(Map<String, dynamic> json) =>
+    _$_PokemonList(
       count: json['count'] as int,
       next: json['next'] as String?,
       previous: json['previous'] as String?,
@@ -15,7 +16,7 @@ _$_Pokemon _$$_PokemonFromJson(Map<String, dynamic> json) => _$_Pokemon(
           .toList(),
     );
 
-Map<String, dynamic> _$$_PokemonToJson(_$_Pokemon instance) =>
+Map<String, dynamic> _$$_PokemonListToJson(_$_PokemonList instance) =>
     <String, dynamic>{
       'count': instance.count,
       'next': instance.next,

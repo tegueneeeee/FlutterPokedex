@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 PokemonList _$PokemonListFromJson(Map<String, dynamic> json) {
-  return _Pokemon.fromJson(json);
+  return _PokemonList.fromJson(json);
 }
 
 /// @nodoc
@@ -81,10 +81,11 @@ class _$PokemonListCopyWithImpl<$Res, $Val extends PokemonList>
 }
 
 /// @nodoc
-abstract class _$$_PokemonCopyWith<$Res> implements $PokemonListCopyWith<$Res> {
-  factory _$$_PokemonCopyWith(
-          _$_Pokemon value, $Res Function(_$_Pokemon) then) =
-      __$$_PokemonCopyWithImpl<$Res>;
+abstract class _$$_PokemonListCopyWith<$Res>
+    implements $PokemonListCopyWith<$Res> {
+  factory _$$_PokemonListCopyWith(
+          _$_PokemonList value, $Res Function(_$_PokemonList) then) =
+      __$$_PokemonListCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -92,10 +93,11 @@ abstract class _$$_PokemonCopyWith<$Res> implements $PokemonListCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_PokemonCopyWithImpl<$Res>
-    extends _$PokemonListCopyWithImpl<$Res, _$_Pokemon>
-    implements _$$_PokemonCopyWith<$Res> {
-  __$$_PokemonCopyWithImpl(_$_Pokemon _value, $Res Function(_$_Pokemon) _then)
+class __$$_PokemonListCopyWithImpl<$Res>
+    extends _$PokemonListCopyWithImpl<$Res, _$_PokemonList>
+    implements _$$_PokemonListCopyWith<$Res> {
+  __$$_PokemonListCopyWithImpl(
+      _$_PokemonList _value, $Res Function(_$_PokemonList) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -106,7 +108,7 @@ class __$$_PokemonCopyWithImpl<$Res>
     Object? previous = freezed,
     Object? results = null,
   }) {
-    return _then(_$_Pokemon(
+    return _then(_$_PokemonList(
       count: null == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -129,16 +131,16 @@ class __$$_PokemonCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Pokemon implements _Pokemon {
-  _$_Pokemon(
+class _$_PokemonList implements _PokemonList {
+  _$_PokemonList(
       {required this.count,
       this.next,
       this.previous,
       required final List<PokemonResult> results})
       : _results = results;
 
-  factory _$_Pokemon.fromJson(Map<String, dynamic> json) =>
-      _$$_PokemonFromJson(json);
+  factory _$_PokemonList.fromJson(Map<String, dynamic> json) =>
+      _$$_PokemonListFromJson(json);
 
   @override
   final int count;
@@ -163,7 +165,7 @@ class _$_Pokemon implements _Pokemon {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Pokemon &&
+            other is _$_PokemonList &&
             (identical(other.count, count) || other.count == count) &&
             (identical(other.next, next) || other.next == next) &&
             (identical(other.previous, previous) ||
@@ -179,25 +181,26 @@ class _$_Pokemon implements _Pokemon {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PokemonCopyWith<_$_Pokemon> get copyWith =>
-      __$$_PokemonCopyWithImpl<_$_Pokemon>(this, _$identity);
+  _$$_PokemonListCopyWith<_$_PokemonList> get copyWith =>
+      __$$_PokemonListCopyWithImpl<_$_PokemonList>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PokemonToJson(
+    return _$$_PokemonListToJson(
       this,
     );
   }
 }
 
-abstract class _Pokemon implements PokemonList {
-  factory _Pokemon(
+abstract class _PokemonList implements PokemonList {
+  factory _PokemonList(
       {required final int count,
       final String? next,
       final String? previous,
-      required final List<PokemonResult> results}) = _$_Pokemon;
+      required final List<PokemonResult> results}) = _$_PokemonList;
 
-  factory _Pokemon.fromJson(Map<String, dynamic> json) = _$_Pokemon.fromJson;
+  factory _PokemonList.fromJson(Map<String, dynamic> json) =
+      _$_PokemonList.fromJson;
 
   @override
   int get count;
@@ -209,6 +212,6 @@ abstract class _Pokemon implements PokemonList {
   List<PokemonResult> get results;
   @override
   @JsonKey(ignore: true)
-  _$$_PokemonCopyWith<_$_Pokemon> get copyWith =>
+  _$$_PokemonListCopyWith<_$_PokemonList> get copyWith =>
       throw _privateConstructorUsedError;
 }
