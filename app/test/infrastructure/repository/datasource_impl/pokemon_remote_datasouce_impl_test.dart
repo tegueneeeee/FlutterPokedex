@@ -35,38 +35,22 @@ void main() {
   );
 
   group(
-    "getPokemonList",
+    "Pokemon list",
     () {
       test(
-        "Should fetch Pokemon list from the pokeApi",
+        "If the pokeApi request for Pokemon list is successful, "
+        "the expected behavior shuold be to fetch the Pokemon list from the pokeApi",
         () async {
           // Arrange
           when(
             () => pokeApiService.getPokemonList(),
           ).thenAnswer((_) async => tPokemonList);
           // Act
-          dataSource.getPokemonList();
+          final data = await dataSource.getPokemonList();
           // Assert
           verify(() => pokeApiService.getPokemonList()).called(1);
           verifyNoMoreInteractions(pokeApiService);
-        },
-      );
-      test(
-        "Should handle suceess when fetching Pokemon list from the pokeApi",
-        () async {
-          // Arrange
-          when(
-            () => pokeApiService.getPokemonList(),
-          ).thenAnswer((_) async => tPokemonList);
-          // Act
-          final result = await dataSource.getPokemonList();
-          final data = (result as Success<PokemonList>).data;
-          // Assert
-          expect(result, isA<Success<PokemonList>>());
-          expect(
-            data,
-            tPokemonList,
-          );
+          expect(data, tPokemonList);
           expect(data.count, 1281);
           expect(
             data.next,
@@ -79,29 +63,23 @@ void main() {
       );
 
       test(
-        "Should handle failure when fetching Pokemon list from the pokeApi",
+        "If the pokeApi request for Pokemon list encounters an exception, "
+        "the expected behavior shuold be to retrun the exception",
         () async {
           // Arrange
           when(
             () => pokeApiService.getPokemonList(),
           ).thenThrow(
-            DioException.badResponse(
-              statusCode: 404,
-              requestOptions: RequestOptions(),
-              response: Response(
-                requestOptions: RequestOptions(),
-              ),
-            ),
+            Exception("test"),
           );
           // Act
-          final result = await dataSource.getPokemonList();
-          final message = (result as Failure<PokemonList>).message;
-          // Assert
-          expect(result, isA<Failure<PokemonList>>());
-          expect(
-            message,
-            PokemonRemoteDataSourceImpl.getPokemonListFailureMessage,
-          );
+          try {
+            await dataSource.getPokemonList();
+          } on Exception catch (e) {
+            // Assert
+            expect(e, isA<Exception>());
+            expect(e.toString(), Exception("test").toString());
+          }
         },
       );
     },

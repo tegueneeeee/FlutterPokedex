@@ -21,8 +21,8 @@ class HomeViewModel extends StateNotifier<HomeState> {
   }
 
   void _getPokemonList() async {
-    state = state.copyWith(pokemonList: Loading());
+    state = state.copyWith(pokemonResults: Loading());
     final result = await getPokemonListUseCase();
-    state = state.copyWith(pokemonList: result);
+    state = state.copyWith(pokemonResults: result);
   }
 }

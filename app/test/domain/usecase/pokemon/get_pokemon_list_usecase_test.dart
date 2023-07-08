@@ -1,8 +1,8 @@
 import 'package:app/core/result.dart';
 import 'package:app/domain/entity/pokemon/pokemon_list.dart';
+import 'package:app/domain/entity/pokemon/pokemon_result.dart';
 import 'package:app/domain/repository/pokemon_repository.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_list_usecase.dart';
-import 'package:app/infrastructure/repository/datasource_impl/pokemon_remote_datasource_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -33,14 +33,14 @@ void main() {
         () async {
           // Arrange
           when(
-            () => pokemonRepository.getPokemonList(),
+            () => pokemonRepository.getPokemonResults(),
           ).thenAnswer(
-            (_) async => Result.success(data: tPokemonList),
+            (_) async => Result.success(data: tPokemonList.results),
           );
           // Act
           getPokemonListUseCase();
           // Assert
-          verify(() => pokemonRepository.getPokemonList()).called(1);
+          verify(() => pokemonRepository.getPokemonResults()).called(1);
           verifyNoMoreInteractions(pokemonRepository);
         },
       );
@@ -50,22 +50,18 @@ void main() {
         () async {
           // Arrange
           when(
-            () => pokemonRepository.getPokemonList(),
+            () => pokemonRepository.getPokemonResults(),
           ).thenAnswer(
-            (_) async => Result.success(data: tPokemonList),
+            (_) async => Result.success(data: tPokemonList.results),
           );
           // Act
           final result = await getPokemonListUseCase();
-          final data = (result as Success<PokemonList>).data;
+          final data = (result as Success<List<PokemonResult>>).data;
           // Assert
-          expect(result, isA<Success<PokemonList>>());
-          expect(data, tPokemonList);
-          expect(data.count, 1281);
-          expect(data.next,
-              "https://pokeapi.co/api/v2/pokemon?offset=151&limit=151");
-          expect(data.previous, null);
-          expect(data.results[0].name, "bulbasaur");
-          expect(data.results[0].url, "https://pokeapi.co/api/v2/pokemon/1/");
+          expect(result, isA<Success<List<PokemonResult>>>());
+          expect(data, tPokemonList.results);
+          expect(data[0].name, "bulbasaur");
+          expect(data[0].url, "https://pokeapi.co/api/v2/pokemon/1/");
         },
       );
 
@@ -74,10 +70,10 @@ void main() {
         () async {
           // Arrange
           when(
-            () => pokemonRepository.getPokemonList(),
+            () => pokemonRepository.getPokemonResults(),
           ).thenAnswer(
             (_) async => Result.failure(
-              message: PokemonRemoteDataSourceImpl.getPokemonListFailureMessage,
+              message: "test",
               exception: DioException.badResponse(
                 statusCode: 404,
                 requestOptions: RequestOptions(),
@@ -90,11 +86,10 @@ void main() {
           // Act
           // Assert
           final result = await getPokemonListUseCase();
-          final message = (result as Failure<PokemonList>).message;
+          final message = (result as Failure<List<PokemonResult>>).message;
           // Assert
-          expect(result, isA<Failure<PokemonList>>());
-          expect(message,
-              PokemonRemoteDataSourceImpl.getPokemonListFailureMessage);
+          expect(result, isA<Failure<List<PokemonResult>>>());
+          expect(message, "test");
         },
       );
     },

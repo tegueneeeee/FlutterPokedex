@@ -2,7 +2,6 @@ import 'package:app/core/result.dart';
 import 'package:app/di/riverpod_setup.dart';
 import 'package:app/domain/entity/pokemon/pokemon_list.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_list_usecase.dart';
-import 'package:app/infrastructure/repository/datasource_impl/pokemon_remote_datasource_impl.dart';
 import 'package:app/presentation/home/home_event.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,7 +41,7 @@ void main() {
         () async {
           // Arrange
           when(() => getPokemonListUseCase()).thenAnswer(
-            (_) async => Result.success(data: tPokemonList),
+            (_) async => Result.success(data: tPokemonList.results),
           );
           // Act
           providerContainer.read(homeViewModelProvider.notifier);
@@ -57,15 +56,15 @@ void main() {
         () async {
           // Arrange
           when(() => getPokemonListUseCase()).thenAnswer(
-            (_) async => Result.success(data: tPokemonList),
+            (_) async => Result.success(data: tPokemonList.results),
           );
           // Act
           final homeViewModel =
               providerContainer.read(homeViewModelProvider.notifier);
           await homeViewModel.onEvent(HomeEvent.getPokemonList());
           final state = providerContainer.read(homeViewModelProvider);
-          final result = state.pokemonList;
-          final data = (state.pokemonList as Success<PokemonList>).data;
+          final result = state.pokemonResults;
+          final data = (state.pokemonResults as Success<PokemonList>).data;
           // Assert
           expect(result, isA<Success<PokemonList>>());
           expect(data, tPokemonList);
@@ -78,7 +77,7 @@ void main() {
           // Arrange
           when(() => getPokemonListUseCase()).thenAnswer(
             (_) async => Result.failure(
-              message: PokemonRemoteDataSourceImpl.getPokemonListFailureMessage,
+              message: "test",
               exception: DioException.badResponse(
                 statusCode: 404,
                 requestOptions: RequestOptions(),
@@ -93,12 +92,12 @@ void main() {
               providerContainer.read(homeViewModelProvider.notifier);
           await homeViewModel.onEvent(HomeEvent.getPokemonList());
           final state = providerContainer.read(homeViewModelProvider);
-          final result = state.pokemonList;
-          final message = (state.pokemonList as Failure<PokemonList>).message;
+          final result = state.pokemonResults;
+          final message =
+              (state.pokemonResults as Failure<PokemonList>).message;
           // Assert
           expect(result, isA<Failure<PokemonList>>());
-          expect(message,
-              PokemonRemoteDataSourceImpl.getPokemonListFailureMessage);
+          expect(message, "test");
         },
       );
     },

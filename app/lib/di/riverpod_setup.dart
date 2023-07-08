@@ -3,6 +3,7 @@ import 'package:app/domain/usecase/image_provider/get_image_provider_average_col
 import 'package:app/domain/usecase/pokemon/get_pokemon_info_usecase.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_list_usecase.dart';
 import 'package:app/infrastructure/api/poke_api_service.dart';
+import 'package:app/infrastructure/repository/datasource_impl/pokemon_cache_datasource_impl.dart';
 import 'package:app/infrastructure/repository/datasource_impl/pokemon_remote_datasource_impl.dart';
 import 'package:app/infrastructure/repository/pokemon_repository_impl.dart';
 import 'package:app/presentation/details/details_state.dart';
@@ -25,9 +26,16 @@ final pokemonRemoteDataSourceProvider = Provider(
   },
 );
 
+final pokemonCacheDataSourceProvider =
+    Provider((_) => PokemonCacheDataSourceImpl());
+
 final pokemonRepositoryProvider = Provider((ref) {
   final pokemonRemoteDateSource = ref.watch(pokemonRemoteDataSourceProvider);
-  return PokemonRepositoryImpl(pokemonRemoteDateSource);
+  final pokemonCacheDataSource = ref.watch(pokemonCacheDataSourceProvider);
+  return PokemonRepositoryImpl(
+    pokemonRemoteDateSource,
+    pokemonCacheDataSource,
+  );
 });
 
 final getPokemonListUseCaseProvider = Provider((ref) {
@@ -48,7 +56,7 @@ final homeViewModelProvider = StateNotifierProvider<HomeViewModel, HomeState>(
   (ref) {
     final getPokemonListUseCase = ref.watch(getPokemonListUseCaseProvider);
     final state = HomeState(
-      pokemonList: Loading(),
+      pokemonResults: Loading(),
     );
     return HomeViewModel(
       state,

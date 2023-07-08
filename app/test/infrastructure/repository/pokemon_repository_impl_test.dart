@@ -1,11 +1,11 @@
 import 'package:app/core/result.dart';
 import 'package:app/domain/entity/pokemon/pokemon_list.dart';
+import 'package:app/domain/entity/pokemon/pokemon_result.dart';
 import 'package:app/domain/entity/pokemon_info/pokemon_info.dart';
 import 'package:app/domain/repository/pokemon_repository.dart';
+import 'package:app/infrastructure/repository/datasource/pokemon_cache_datasource.dart';
 import 'package:app/infrastructure/repository/datasource/pokemon_remote_datasource.dart';
-import 'package:app/infrastructure/repository/datasource_impl/pokemon_remote_datasource_impl.dart';
 import 'package:app/infrastructure/repository/pokemon_repository_impl.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -13,169 +13,121 @@ import '../../fixture.dart';
 
 class MockRemoteDataSource extends Mock implements PokemonRemoteDataSource {}
 
+class MockCacheDataSource extends Mock implements PokemonCacheDataSource {}
+
 void main() {
   late MockRemoteDataSource remoteDataSource;
+  late MockCacheDataSource cacheDataSource;
   late PokemonRepository pokemonRepository;
   late Fixture fixture;
   late PokemonList tPokemonList;
   late PokemonInfo tPokemonInfo;
+  late List<PokemonResult> tPokemonResults;
 
   setUp(
     () async {
       remoteDataSource = MockRemoteDataSource();
-      pokemonRepository = PokemonRepositoryImpl(remoteDataSource);
+      cacheDataSource = MockCacheDataSource();
+      pokemonRepository = PokemonRepositoryImpl(
+        remoteDataSource,
+        cacheDataSource,
+      );
       fixture = Fixture();
       tPokemonList =
           PokemonList.fromJson(fixture.readJsonFile(Fixture.pokemonListJson));
       tPokemonInfo =
           PokemonInfo.fromJson(fixture.readJsonFile(Fixture.pokemonInfoJson));
+      tPokemonResults = tPokemonList.results;
     },
   );
 
   group(
-    "getPokemonList",
+    "getPokemonResults",
     () {
       test(
-        "Should fetch pokemon list from the remote data source",
+        "If the cache for Pokemon results is not empty, "
+        "the Pokemon results should be fetched from the cache data source.",
+        () async {
+          // Arrage
+          when(() => cacheDataSource.getPokemonResultsFromCache())
+              .thenAnswer((_) async => tPokemonResults);
+          // Act
+          final pokemonResults = await pokemonRepository.getPokemonResults();
+          final data = (pokemonResults as Success<List<PokemonResult>>).data;
+          // Assert
+          verify(() => cacheDataSource.getPokemonResultsFromCache()).called(1);
+          verifyNoMoreInteractions(cacheDataSource);
+          expect(pokemonResults, isA<Success<List<PokemonResult>>>());
+          expect(data, tPokemonResults);
+        },
+      );
+      test(
+        "If the cache for Pokemon results encounters an exception, "
+        "handling the failure of fetching Pokemon results.",
+        () async {
+          // Arrage
+          when(() => cacheDataSource.getPokemonResultsFromCache())
+              .thenThrow(Exception("test"));
+          // Act
+          final pokemonResults = await pokemonRepository.getPokemonResults();
+          final message =
+              (pokemonResults as Failure<List<PokemonResult>>).message;
+          verify(() => cacheDataSource.getPokemonResultsFromCache()).called(1);
+          verifyNoMoreInteractions(cacheDataSource);
+          expect(pokemonResults, isA<Failure<List<PokemonResult>>>());
+          expect(message, Exception("test").toString());
+        },
+      );
+
+      test(
+        "If the cache for Pokemon results is empty, "
+        "the Pokemon results should be fetched from the remote data source, "
+        "and set in the cache.",
         () async {
           // Arrange
-          when(
-            () => remoteDataSource.getPokemonList(),
-          ).thenAnswer((_) async => Result.success(data: tPokemonList));
+          when(() => cacheDataSource.getPokemonResultsFromCache())
+              .thenAnswer((_) async => List.empty());
+          when(() => remoteDataSource.getPokemonList())
+              .thenAnswer((_) async => tPokemonList);
+          when(() => cacheDataSource.setPokemonResultsToCache(
+              pokemonResults: tPokemonResults)).thenAnswer((_) async {});
           // Act
-          pokemonRepository.getPokemonList();
+          final pokemonResults = await pokemonRepository.getPokemonResults();
+          final data = (pokemonResults as Success<List<PokemonResult>>).data;
           // Assert
+          verify(() => cacheDataSource.getPokemonResultsFromCache()).called(1);
           verify(() => remoteDataSource.getPokemonList()).called(1);
+          verify(() => cacheDataSource.setPokemonResultsToCache(
+              pokemonResults: tPokemonResults)).called(1);
+          verifyNoMoreInteractions(cacheDataSource);
           verifyNoMoreInteractions(remoteDataSource);
+          expect(pokemonResults, isA<Success<List<PokemonResult>>>());
+          expect(data, tPokemonResults);
         },
       );
 
       test(
-        "Should handle suceess when fetching Pokemon list from the remote data source",
+        "If the remote for Pokemon results encounters an exception, "
+        "handling the failure of fetching Pokemon results.",
         () async {
           // Arrange
-          when(
-            () => remoteDataSource.getPokemonList(),
-          ).thenAnswer((_) async => Result.success(data: tPokemonList));
+          when(() => cacheDataSource.getPokemonResultsFromCache())
+              .thenAnswer((_) async => List.empty());
+          when(() => remoteDataSource.getPokemonList())
+              .thenThrow(Exception("test"));
+          when(() => cacheDataSource.setPokemonResultsToCache(
+              pokemonResults: tPokemonResults)).thenAnswer((_) async {});
           // Act
-          final result = await pokemonRepository.getPokemonList();
-          final data = (result as Success<PokemonList>).data;
+          final pokemonResults = await pokemonRepository.getPokemonResults();
+          final message =
+              (pokemonResults as Failure<List<PokemonResult>>).message;
           // Assert
-          expect(result, isA<Success<PokemonList>>());
-          expect(
-            data,
-            tPokemonList,
-          );
-          expect(data.count, 1281);
-          expect(
-            data.next,
-            "https://pokeapi.co/api/v2/pokemon?offset=151&limit=151",
-          );
-          expect(data.previous, null);
-          expect(data.results[0].name, "bulbasaur");
-          expect(data.results[0].url, "https://pokeapi.co/api/v2/pokemon/1/");
-        },
-      );
-
-      test(
-        "Should handle failure when fetching Pokemon list from the remote data source",
-        () async {
-          // Arrange
-          when(
-            () => remoteDataSource.getPokemonList(),
-          ).thenAnswer(
-            (_) async => Result.failure(
-              message: PokemonRemoteDataSourceImpl.getPokemonListFailureMessage,
-              exception: DioException.badResponse(
-                statusCode: 404,
-                requestOptions: RequestOptions(),
-                response: Response(
-                  requestOptions: RequestOptions(),
-                ),
-              ),
-            ),
-          );
-          // Act
-          final result = await pokemonRepository.getPokemonList();
-          final message = (result as Failure<PokemonList>).message;
-          // Assert
-          expect(result, isA<Failure<PokemonList>>());
-          expect(message,
-              PokemonRemoteDataSourceImpl.getPokemonListFailureMessage);
-        },
-      );
-    },
-  );
-
-  group(
-    "getPokemonInfo",
-    () {
-      test(
-        "Should fetch pokemon info from the remote data source",
-        () async {
-          // Arrange
-          when(
-            () => remoteDataSource.getPokemonInfo(name: "test"),
-          ).thenAnswer((_) async => Result.success(data: tPokemonInfo));
-          // Act
-          pokemonRepository.getPokemonInfo(name: "test");
-          // Assert
-          verify(() => remoteDataSource.getPokemonInfo(name: "test")).called(1);
+          verify(() => cacheDataSource.getPokemonResultsFromCache()).called(1);
+          verify(() => remoteDataSource.getPokemonList()).called(1);
+          verifyNoMoreInteractions(cacheDataSource);
           verifyNoMoreInteractions(remoteDataSource);
-        },
-      );
-
-      test(
-        "Should handle suceess when fetching Pokemon info from the remote data source",
-        () async {
-          // Arrange
-          when(
-            () => remoteDataSource.getPokemonInfo(name: "test"),
-          ).thenAnswer((_) async => Result.success(data: tPokemonInfo));
-          // Act
-          final result = await pokemonRepository.getPokemonInfo(name: "test");
-          final data = (result as Success<PokemonInfo>).data;
-          // Assert
-          expect(result, isA<Success<PokemonInfo>>());
-          expect(data, tPokemonInfo);
-          expect(data.id, 1);
-          expect(data.name, "bulbasaur");
-          expect(data.height, 7);
-          expect(data.weight, 69);
-          expect(data.types[0].slot, 1);
-          expect(data.types[0].type.name, "grass");
-          expect(data.types[0].type.url, "https://pokeapi.co/api/v2/type/12/");
-          expect(data.types[1].slot, 2);
-          expect(data.types[1].type.name, "poison");
-          expect(data.types[1].type.url, "https://pokeapi.co/api/v2/type/4/");
-        },
-      );
-
-      test(
-        "Should handle failure when fetching Pokemon info from the remote data source",
-        () async {
-          // Arrange
-          when(
-            () => remoteDataSource.getPokemonInfo(name: "test"),
-          ).thenAnswer(
-            (_) async => Result.failure(
-              message: PokemonRemoteDataSourceImpl.getPokemonInfoFailureMessage,
-              exception: DioException.badResponse(
-                statusCode: 404,
-                requestOptions: RequestOptions(),
-                response: Response(
-                  requestOptions: RequestOptions(),
-                ),
-              ),
-            ),
-          );
-          // Act
-          final result = await pokemonRepository.getPokemonInfo(name: "test");
-          final message = (result as Failure<PokemonInfo>).message;
-          // Assert
-          expect(result, isA<Failure<PokemonInfo>>());
-          expect(message,
-              PokemonRemoteDataSourceImpl.getPokemonInfoFailureMessage);
+          expect(pokemonResults, isA<Failure<List<PokemonResult>>>());
+          expect(message, Exception("test").toString());
         },
       );
     },

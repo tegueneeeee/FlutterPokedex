@@ -10,19 +10,12 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
 
   PokemonRemoteDataSourceImpl(this.pokeApiService);
 
-  static const getPokemonListFailureMessage = "getPokemonList Failure";
   static const getPokemonInfoFailureMessage = "getPokemonInfo Failure";
   static const getPokemonSpeciesFailureMessage = "getPokemonSpecies Failure";
 
   @override
-  Future<Result<PokemonList>> getPokemonList() async {
-    try {
-      final response = await pokeApiService.getPokemonList();
-      return Result.success(data: response);
-    } on Exception catch (e) {
-      return Result.failure(
-          message: getPokemonListFailureMessage, exception: e);
-    }
+  Future<PokemonList> getPokemonList() async {
+    return await pokeApiService.getPokemonList();
   }
 
   @override

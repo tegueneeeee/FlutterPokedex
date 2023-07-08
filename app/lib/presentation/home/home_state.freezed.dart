@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeState {
-  Result<PokemonList> get pokemonList => throw _privateConstructorUsedError;
+  Result<List<PokemonResult>> get pokemonResults =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -28,7 +29,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({Result<PokemonList> pokemonList});
+  $Res call({Result<List<PokemonResult>> pokemonResults});
 }
 
 /// @nodoc
@@ -44,13 +45,13 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? pokemonList = null,
+    Object? pokemonResults = null,
   }) {
     return _then(_value.copyWith(
-      pokemonList: null == pokemonList
-          ? _value.pokemonList
-          : pokemonList // ignore: cast_nullable_to_non_nullable
-              as Result<PokemonList>,
+      pokemonResults: null == pokemonResults
+          ? _value.pokemonResults
+          : pokemonResults // ignore: cast_nullable_to_non_nullable
+              as Result<List<PokemonResult>>,
     ) as $Val);
   }
 }
@@ -62,7 +63,7 @@ abstract class _$$_HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
       __$$_HomeStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Result<PokemonList> pokemonList});
+  $Res call({Result<List<PokemonResult>> pokemonResults});
 }
 
 /// @nodoc
@@ -76,13 +77,13 @@ class __$$_HomeStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? pokemonList = null,
+    Object? pokemonResults = null,
   }) {
     return _then(_$_HomeState(
-      pokemonList: null == pokemonList
-          ? _value.pokemonList
-          : pokemonList // ignore: cast_nullable_to_non_nullable
-              as Result<PokemonList>,
+      pokemonResults: null == pokemonResults
+          ? _value.pokemonResults
+          : pokemonResults // ignore: cast_nullable_to_non_nullable
+              as Result<List<PokemonResult>>,
     ));
   }
 }
@@ -90,14 +91,14 @@ class __$$_HomeStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_HomeState implements _HomeState {
-  _$_HomeState({required this.pokemonList});
+  _$_HomeState({required this.pokemonResults});
 
   @override
-  final Result<PokemonList> pokemonList;
+  final Result<List<PokemonResult>> pokemonResults;
 
   @override
   String toString() {
-    return 'HomeState(pokemonList: $pokemonList)';
+    return 'HomeState(pokemonResults: $pokemonResults)';
   }
 
   @override
@@ -105,12 +106,12 @@ class _$_HomeState implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_HomeState &&
-            (identical(other.pokemonList, pokemonList) ||
-                other.pokemonList == pokemonList));
+            (identical(other.pokemonResults, pokemonResults) ||
+                other.pokemonResults == pokemonResults));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, pokemonList);
+  int get hashCode => Object.hash(runtimeType, pokemonResults);
 
   @JsonKey(ignore: true)
   @override
@@ -120,11 +121,12 @@ class _$_HomeState implements _HomeState {
 }
 
 abstract class _HomeState implements HomeState {
-  factory _HomeState({required final Result<PokemonList> pokemonList}) =
+  factory _HomeState(
+          {required final Result<List<PokemonResult>> pokemonResults}) =
       _$_HomeState;
 
   @override
-  Result<PokemonList> get pokemonList;
+  Result<List<PokemonResult>> get pokemonResults;
   @override
   @JsonKey(ignore: true)
   _$$_HomeStateCopyWith<_$_HomeState> get copyWith =>

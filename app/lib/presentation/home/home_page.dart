@@ -23,9 +23,9 @@ class HomePage extends ConsumerWidget {
             textStyle: TextStyleEnum.headlineMedium,
           ),
         ),
-        body: switch (state.pokemonList) {
+        body: switch (state.pokemonResults) {
           Success(data: final data) => CustomGrid(
-              listItems: data.results.map(
+              listItems: data.map(
                 (pokemon) {
                   final pokemonImage = NetworkImage(pokemon.getImageUrl());
                   return Column(
