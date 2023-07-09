@@ -43,6 +43,11 @@ class HomePage extends ConsumerWidget {
                           ref.read(detailsViewModelProvider.notifier).onEvent(
                                 DetailsEvent.getPokemonInfo(pokemon: pokemon),
                               );
+                          ref.read(detailsViewModelProvider.notifier).onEvent(
+                                DetailsEvent.getPokemonSpecies(
+                                  name: pokemon.name,
+                                ),
+                              );
                           ref
                               .read(goRouterProvider)
                               .goNamed(DetailsPage.pageName, extra: pokemon);

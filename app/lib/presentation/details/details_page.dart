@@ -95,6 +95,18 @@ class DetailsPage extends ConsumerWidget {
                         ],
                       ),
                     ),
+                    // switch (state.pokemonSpecies) {
+                    //   Success(data: final data) => Padding(
+                    //       padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    //       child: CustomText(
+                    //         data.flavorTexts[6].flavorText,
+                    //         textStyle: TextStyleEnum.bodyLarge,
+                    //       ),
+                    //     ),
+                    //   Failure(message: final message) => Container(),
+                    //   Loading() => Container(),
+                    // },
+                    const Divider(),
                     const Padding(
                       padding: EdgeInsets.only(left: 8.0, top: 8.0),
                       child: CustomText(

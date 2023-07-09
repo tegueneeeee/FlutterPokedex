@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$DetailsState {
   Result<PokemonInfo> get pokemonInfo => throw _privateConstructorUsedError;
+  Result<PokemonSpecies> get pokemonSpecies =>
+      throw _privateConstructorUsedError;
   Result<Color> get averageColor => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +32,10 @@ abstract class $DetailsStateCopyWith<$Res> {
           DetailsState value, $Res Function(DetailsState) then) =
       _$DetailsStateCopyWithImpl<$Res, DetailsState>;
   @useResult
-  $Res call({Result<PokemonInfo> pokemonInfo, Result<Color> averageColor});
+  $Res call(
+      {Result<PokemonInfo> pokemonInfo,
+      Result<PokemonSpecies> pokemonSpecies,
+      Result<Color> averageColor});
 }
 
 /// @nodoc
@@ -47,6 +52,7 @@ class _$DetailsStateCopyWithImpl<$Res, $Val extends DetailsState>
   @override
   $Res call({
     Object? pokemonInfo = null,
+    Object? pokemonSpecies = null,
     Object? averageColor = null,
   }) {
     return _then(_value.copyWith(
@@ -54,6 +60,10 @@ class _$DetailsStateCopyWithImpl<$Res, $Val extends DetailsState>
           ? _value.pokemonInfo
           : pokemonInfo // ignore: cast_nullable_to_non_nullable
               as Result<PokemonInfo>,
+      pokemonSpecies: null == pokemonSpecies
+          ? _value.pokemonSpecies
+          : pokemonSpecies // ignore: cast_nullable_to_non_nullable
+              as Result<PokemonSpecies>,
       averageColor: null == averageColor
           ? _value.averageColor
           : averageColor // ignore: cast_nullable_to_non_nullable
@@ -70,7 +80,10 @@ abstract class _$$_DetailsStateCopyWith<$Res>
       __$$_DetailsStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Result<PokemonInfo> pokemonInfo, Result<Color> averageColor});
+  $Res call(
+      {Result<PokemonInfo> pokemonInfo,
+      Result<PokemonSpecies> pokemonSpecies,
+      Result<Color> averageColor});
 }
 
 /// @nodoc
@@ -85,6 +98,7 @@ class __$$_DetailsStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? pokemonInfo = null,
+    Object? pokemonSpecies = null,
     Object? averageColor = null,
   }) {
     return _then(_$_DetailsState(
@@ -92,6 +106,10 @@ class __$$_DetailsStateCopyWithImpl<$Res>
           ? _value.pokemonInfo
           : pokemonInfo // ignore: cast_nullable_to_non_nullable
               as Result<PokemonInfo>,
+      pokemonSpecies: null == pokemonSpecies
+          ? _value.pokemonSpecies
+          : pokemonSpecies // ignore: cast_nullable_to_non_nullable
+              as Result<PokemonSpecies>,
       averageColor: null == averageColor
           ? _value.averageColor
           : averageColor // ignore: cast_nullable_to_non_nullable
@@ -103,16 +121,21 @@ class __$$_DetailsStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_DetailsState implements _DetailsState {
-  _$_DetailsState({required this.pokemonInfo, required this.averageColor});
+  _$_DetailsState(
+      {required this.pokemonInfo,
+      required this.pokemonSpecies,
+      required this.averageColor});
 
   @override
   final Result<PokemonInfo> pokemonInfo;
+  @override
+  final Result<PokemonSpecies> pokemonSpecies;
   @override
   final Result<Color> averageColor;
 
   @override
   String toString() {
-    return 'DetailsState(pokemonInfo: $pokemonInfo, averageColor: $averageColor)';
+    return 'DetailsState(pokemonInfo: $pokemonInfo, pokemonSpecies: $pokemonSpecies, averageColor: $averageColor)';
   }
 
   @override
@@ -122,12 +145,15 @@ class _$_DetailsState implements _DetailsState {
             other is _$_DetailsState &&
             (identical(other.pokemonInfo, pokemonInfo) ||
                 other.pokemonInfo == pokemonInfo) &&
+            (identical(other.pokemonSpecies, pokemonSpecies) ||
+                other.pokemonSpecies == pokemonSpecies) &&
             (identical(other.averageColor, averageColor) ||
                 other.averageColor == averageColor));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, pokemonInfo, averageColor);
+  int get hashCode =>
+      Object.hash(runtimeType, pokemonInfo, pokemonSpecies, averageColor);
 
   @JsonKey(ignore: true)
   @override
@@ -139,10 +165,13 @@ class _$_DetailsState implements _DetailsState {
 abstract class _DetailsState implements DetailsState {
   factory _DetailsState(
       {required final Result<PokemonInfo> pokemonInfo,
+      required final Result<PokemonSpecies> pokemonSpecies,
       required final Result<Color> averageColor}) = _$_DetailsState;
 
   @override
   Result<PokemonInfo> get pokemonInfo;
+  @override
+  Result<PokemonSpecies> get pokemonSpecies;
   @override
   Result<Color> get averageColor;
   @override

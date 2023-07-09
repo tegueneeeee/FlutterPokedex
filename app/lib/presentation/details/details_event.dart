@@ -6,6 +6,8 @@ sealed class DetailsEvent {
       GetpokemonInfo;
   factory DetailsEvent.setAverageColor({required ImageProvider imageProvider}) =
       SetAverageColor;
+  factory DetailsEvent.getPokemonSpecies({required String name}) =
+      GetPokemonSpecies;
 }
 
 class GetpokemonInfo implements DetailsEvent {
@@ -16,4 +18,10 @@ class GetpokemonInfo implements DetailsEvent {
 class SetAverageColor implements DetailsEvent {
   final ImageProvider imageProvider;
   SetAverageColor({required this.imageProvider});
+}
+
+class GetPokemonSpecies implements DetailsEvent {
+  final String name;
+
+  GetPokemonSpecies({required this.name});
 }

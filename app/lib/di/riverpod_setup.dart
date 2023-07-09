@@ -3,6 +3,7 @@ import 'package:app/domain/entity/pokemon/pokemon_result.dart';
 import 'package:app/domain/usecase/image_provider/get_image_provider_average_color_usecase.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_info_usecase.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_list_usecase.dart';
+import 'package:app/domain/usecase/pokemon/get_pokemon_species_usecase.dart';
 import 'package:app/infrastructure/api/poke_api_service.dart';
 import 'package:app/infrastructure/db/pokemon_result_dao_impl.dart';
 import 'package:app/infrastructure/repository/datasource_impl/pokemon_cache_datasource_impl.dart';
@@ -51,9 +52,11 @@ final pokemonRemoteDataSourceProvider = Provider(
 final pokemonRepositoryProvider = Provider((ref) {
   final pokemonRemoteDateSource = ref.watch(pokemonRemoteDataSourceProvider);
   final pokemonCacheDataSource = ref.watch(pokemonCacheDataSourceProvider);
+  final pokemonLocalDataSource = ref.watch(pokemonLocalDataSourceProvider);
   return PokemonRepositoryImpl(
     pokemonRemoteDateSource,
     pokemonCacheDataSource,
+    pokemonLocalDataSource,
   );
 });
 
@@ -64,6 +67,10 @@ final getPokemonListUseCaseProvider = Provider((ref) {
 final getPokemonInfoUseCaseProvider = Provider((ref) {
   final pokemonRepository = ref.watch(pokemonRepositoryProvider);
   return GetPokemonInfoUseCase(pokemonRepository);
+});
+final getPokemonSpeciesUseCaseProvider = Provider((ref) {
+  final pokemonRepository = ref.watch(pokemonRepositoryProvider);
+  return GetPokemonSpeciesUseCase(pokemonRepository);
 });
 final getImageProviderAverageColorUseCaseProvider = Provider(
   (_) {
@@ -90,14 +97,18 @@ final detailsViewModelProvider =
     final getPokemonInfoUseCase = ref.watch(getPokemonInfoUseCaseProvider);
     final getImageProviderAverageColorUseCase =
         ref.watch(getImageProviderAverageColorUseCaseProvider);
+    final getPokemonSpeciesUseCase =
+        ref.watch(getPokemonSpeciesUseCaseProvider);
     final state = DetailsState(
       pokemonInfo: Loading(),
       averageColor: Loading(),
+      pokemonSpecies: Loading(),
     );
     return DetailsViewModel(
       state,
       getPokemonInfoUseCase,
       getImageProviderAverageColorUseCase,
+      getPokemonSpeciesUseCase,
     );
   },
 );
