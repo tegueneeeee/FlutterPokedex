@@ -3,24 +3,20 @@ import 'package:app/infrastructure/db/pokemon_result_dao.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class PokemonResultDAOImpl implements PokemonResultDAO {
-  late final Box<PokemonResult> pokemonResultBox;
+  final Box<PokemonResult> pokemonResultBox;
+
+  PokemonResultDAOImpl(this.pokemonResultBox);
+
   @override
-  Future<void> init() async {
-    await Hive.initFlutter('pokemonDB');
-    Hive.registerAdapter(PokemonResultAdapter());
-    pokemonResultBox = await Hive.openBox<PokemonResult>("pokemonResult");
+  Future<List<PokemonResult>> getPokemonResults() async {
+    final pokemonResults = pokemonResultBox.toMap().values.toList();
+    return pokemonResults;
   }
 
   @override
-  List<PokemonResult> getPokemonResults() {
-    final pokemonList = pokemonResultBox.toMap().values.toList();
-    return pokemonList;
-  }
-
-  @override
-  void addPokemonResults({
+  Future<void> addPokemonResults({
     required List<PokemonResult> pokemonResults,
-  }) {
+  }) async {
     pokemonResultBox.addAll(pokemonResults);
   }
 

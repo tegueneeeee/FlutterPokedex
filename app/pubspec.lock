@@ -291,10 +291,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "1531542666c2d052c44bbf6e2b48011bf3771da0404b94c60eabec1228a62906"
+      sha256: b33a88c67816312597e5e0f5906c5139a0b9bd9bb137346e872c788da7af8ea0
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "9.0.3"
   google_fonts:
     dependency: transitive
     description:
@@ -488,7 +488,7 @@ packages:
     source: hosted
     version: "1.8.3"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: "3087813781ab814e4157b172f1a11c46be20179fcc9bea043e0fba36bc0acaa2"
@@ -595,10 +595,10 @@ packages:
     dependency: "direct dev"
     description:
       name: retrofit_generator
-      sha256: cb3aadf0c270d2e03786a4132fd0ac7067451a1d0c83a9fb6036fc291f768613
+      sha256: "9499eb46b3657a62192ddbc208ff7e6c6b768b19e83c1ee6f6b119c864b99690"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.7"
+    version: "7.0.8"
   riverpod:
     dependency: transitive
     description:

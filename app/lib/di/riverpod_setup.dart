@@ -1,4 +1,5 @@
 import 'package:app/core/result.dart';
+import 'package:app/domain/entity/pokemon/pokemon_result.dart';
 import 'package:app/domain/usecase/image_provider/get_image_provider_average_color_usecase.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_info_usecase.dart';
 import 'package:app/domain/usecase/pokemon/get_pokemon_list_usecase.dart';
@@ -14,6 +15,7 @@ import 'package:app/presentation/home/home_state.dart';
 import 'package:app/presentation/home/home_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 final pokeApiServiceProvider = Provider(
   (_) {
@@ -24,9 +26,8 @@ final pokeApiServiceProvider = Provider(
 
 final pokemonResultDAOProvider = Provider(
   (_) {
-    final pokemonResultDAO = PokemonResultDAOImpl();
-    pokemonResultDAO.init();
-    return pokemonResultDAO;
+    final pokemonResultBox = Hive.box<PokemonResult>('pokemonResult');
+    return PokemonResultDAOImpl(pokemonResultBox);
   },
 );
 

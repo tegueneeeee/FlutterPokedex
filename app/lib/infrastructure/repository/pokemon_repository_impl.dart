@@ -35,6 +35,10 @@ class PokemonRepositoryImpl implements PokemonRepository {
     return pokemonResults;
   }
 
+  // Future<List<PokemonResult>> _getPokemonResultsFromDB() async {
+  //   late List<PokemonResult> pokemonResults;
+  // }
+
   Future<List<PokemonResult>> _getPokemonResultsFromApi() async {
     late List<PokemonResult> pokemonResults;
     final response = await remoteDataSource.getPokemonList();
