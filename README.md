@@ -14,16 +14,25 @@
 🐼 Pokedex demonstrates modern Flutter development based on MVVM CleanArchitecture.
 </p>
 
-## Usage
-
 ## Tech stack & Open-source libraries
-- [Riverpod]()
+- [Riverpod](https://pub.dev/packages/flutter_riverpod)
+- Clean Architecture
+  - MVVM Architecture View(Page StatelessWidget) - ViewModel(StateNotifier by Riverpod) - Model(Entity by Freezed)
+  - Repository Pattern
+  - Remote, Local, Cache data soure
+  - UseCase
+- [Retrofit](https://pub.dev/packages/retrofit) & [Dio](https://pub.dev/packages/dio): Construct the REST APIs network interface.
+- [Freezed](https://pub.dev/packages/freezed): Creating immutable classes with value equality for modeling
+- [go_router](https://pub.dev/packages/go_router): Navigation simplifiles routing in app
+- [Mocktail](https://pub.dev/packages/mocktail): Unit Test Mocking
+- [palette_generator](https://pub.dev/packages/palette_generator): For average background color
+  
 
 ## Architecture 
-
+Flutter Pokedex is based on the Clean Architecture MVVM architecture
 ## Open API
 
-<img src="https://pokeapi.co/static/pokeapi_256.3fa72200.png" align="right" width="21%"/>
+<img src="https://pokeapi.co/static/pokeapi_256.3fa72200.png" align="left" width="25%"/>
 
 Pokedex using the [PokeAPI](https://pokeapi.co/) for constructing RESTful API.<br>
 PokeAPI provides a RESTful API interface to highly detailed objects built from thousands of lines of data related to Pokémon.
